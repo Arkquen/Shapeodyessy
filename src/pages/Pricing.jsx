@@ -508,7 +508,7 @@ export default function Pricing() {
         </div>
 
         {/* ── PLAN CARDS ── */}
-        <div className={`grid gap-6 mb-8 ${active.plans.length === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-1 md:grid-cols-2 max-w-3xl"}`}>
+        <div className={`grid gap-6 mb-8 ${active.plans.length === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto"}`}>
           {active.plans.map((plan, i) => (
             <PlanCard key={i} plan={plan} accent={active.accentColor} />
           ))}

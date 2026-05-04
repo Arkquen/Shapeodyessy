@@ -12,7 +12,7 @@ export default function Footer() {
             <Link className="flex items-center group mb-6" to="/">
               <img
                 src="/assets/logo.png"
-                alt="AutoFunnel Labs"
+                alt="ShapeOdyssey"
                 className="h-10 md:h-12 transform group-hover:scale-105 transition-transform duration-300"
               />
             </Link>
@@ -90,7 +90,7 @@ export default function Footer() {
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/[0.02]">
           <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest">
-            © 2024 AUTOFUNNEL LABS. ALL RIGHTS RESERVED.
+            © 2024 SHAPEODYSSEY. ALL RIGHTS RESERVED.
           </span>
           <div className="flex items-center gap-3 bg-white/[0.02] px-4 py-2 rounded-full border border-white/5">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>

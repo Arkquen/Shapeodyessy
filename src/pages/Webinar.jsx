@@ -57,7 +57,7 @@ function TimerBlock({ value, label }) {
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 const agenda = [
-  { time: "4:00 PM", title: "Welcome & Introduction", desc: "Meet the AutoFunnel Labs team. We'll set the stage for what you'll learn and how to get the most from the session.", icon: "waving_hand", color: "text-primary" },
+  { time: "4:00 PM", title: "Welcome & Introduction", desc: "Meet the ShapeOdyssey team. We'll set the stage for what you'll learn and how to get the most from the session.", icon: "waving_hand", color: "text-primary" },
   { time: "4:10 PM", title: "Funnel Strategy Deep-Dive", desc: "How to build a high-converting sales funnel from scratch — landing pages, lead magnets, CRM setup, and follow-up sequences that close.", icon: "filter_alt", color: "text-primary" },
   { time: "4:30 PM", title: "Facebook & Instagram Ads", desc: "Creative strategy, audience targeting, retargeting systems, and how to scale campaigns profitably without wasting budget.", icon: "campaign", color: "text-secondary" },
   { time: "4:50 PM", title: "Google Ads & Search", desc: "Search vs Display vs Performance Max — when to use each, keyword strategy, and how to structure campaigns for maximum ROI.", icon: "ads_click", color: "text-secondary" },

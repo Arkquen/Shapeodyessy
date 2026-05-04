@@ -1,4 +1,4 @@
-# AutoFunnel Labs
+# ShapeOdyssey
 
 A modern, dark-themed marketing SaaS website built with React + Vite. Features GSAP scroll animations, interactive 3D elements, a live countdown webinar timer, and a fully tabbed pricing system across five service categories.
 
@@ -34,7 +34,7 @@ A modern, dark-themed marketing SaaS website built with React + Vite. Features G
 
 ```bash
 # Clone or unzip the project
-cd autofunnel-labs
+cd shapeodyssey
 
 # Install dependencies
 npm install
@@ -56,7 +56,7 @@ The dev server runs at `http://localhost:5173` by default.
 ## Project Structure
 
 ```
-autofunnel-labs/
+shapeodyssey/
 ├── public/
 │   └── assets/
 │       └── logo.png          ← Place your logo here

@@ -48,7 +48,7 @@ export default function Navbar() {
             <Link className="flex items-center group" to="/">
               <img
                 src="/assets/logo.png"
-                alt="AutoFunnel Labs"
+                alt="ShapeOdyssey"
                 className="h-8 md:h-10 transform group-hover:scale-105 transition-transform duration-300"
               />
             </Link>

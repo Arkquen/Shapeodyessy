@@ -401,7 +401,7 @@ export default function Home() {
             SEE THE PLATFORM<br />IN ACTION.
           </h2>
           <p className="text-base md:text-lg font-body text-text-muted font-light max-w-xl text-center leading-relaxed mb-12 md:mb-16 web-anim">
-            Join our product experts for a live walkthrough of the AutoFunnel SaaS. See exactly how we generate and automate leads for businesses like yours.
+            Join our product experts for a live walkthrough of the ShapeOdyssey. See exactly how we generate and automate leads for businesses like yours.
           </p>
           <div className="glass-panel glow-card w-full max-w-2xl p-8 md:p-12 rounded-xl border-white/10 web-anim text-center">
             <p className="text-text-muted mb-8 font-light">Secure your spot for the next live session.</p>

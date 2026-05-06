@@ -49,7 +49,7 @@ export default function Navbar() {
               <img
                 src="/assets/logo.png"
                 alt="ShapeOdyssey"
-                className="h-8 md:h-10 transform group-hover:scale-105 transition-transform duration-300"
+                className="h-10 md:h-12 transform group-hover:scale-105 transition-transform duration-300"
               />
             </Link>
           </div>

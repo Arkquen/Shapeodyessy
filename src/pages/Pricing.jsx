@@ -22,7 +22,7 @@ const categories = [
         tag: "Basic Funnel",
         tagColor: "text-text-dim",
         highlighted: false,
-        price: "₹ —,———",
+        price: "₹9,997",
         period: "one-time",
         features: [
           { text: "Landing Page Design & Build", included: true },
@@ -40,7 +40,7 @@ const categories = [
         tagColor: "text-primary",
         highlighted: true,
         recommended: true,
-        price: "₹ —,———",
+        price: "₹24,997",
         period: "one-time",
         features: [
           { text: "High-Converting Landing Page", included: true },
@@ -52,29 +52,12 @@ const categories = [
           { text: "Priority Support", included: false },
         ],
       },
-      {
-        name: "Kinetic Conduit",
-        tag: "Premium Funnel",
-        tagColor: "text-secondary",
-        highlighted: false,
-        price: "₹ ——,———",
-        period: "one-time",
-        features: [
-          { text: "Interactive & Animated Landing Page", included: true },
-          { text: "Full CRM + Pipeline Integration", included: true },
-          { text: "30-Day Multi-channel Automation", included: true },
-          { text: "14 WABA WhatsApp Messages", included: true },
-          { text: "14 Custom Facebook Creatives", included: true },
-          { text: "Full A/B Testing Suite", included: true },
-          { text: "Priority Support", included: true },
-        ],
-      },
     ],
     maintenance: {
       name: "Funnel Maintenance",
       icon: "build",
       desc: "Keep your funnel optimised, updated, and converting month after month.",
-      price: "₹ —,———",
+      price: "₹15,000",
       period: "/ month",
       perks: [
         "Monthly performance audit & report",
@@ -96,53 +79,35 @@ const categories = [
     glowClass: "shadow-[0_0_60px_rgba(0,245,255,0.08)]",
     plans: [
       {
-        name: "Ad Launch",
-        tag: "Creation",
-        tagColor: "text-primary",
-        highlighted: false,
-        price: "₹ —,———",
-        period: "one-time",
-        features: [
-          { text: "Campaign Strategy & Architecture", included: true },
-          { text: "Audience Research & Targeting Setup", included: true },
-          { text: "3 Ad Creatives (Image/Video)", included: true },
-          { text: "Facebook Pixel Installation", included: true },
-          { text: "Ad Copywriting", included: true },
-          { text: "Retargeting Audiences Setup", included: false },
-          { text: "Ongoing Optimisation", included: false },
-        ],
-      },
-      {
-        name: "Ad Accelerator",
-        tag: "Creation + Retargeting",
+        name: "Ad Creation Pack",
+        tag: "One-Time Creation",
         tagColor: "text-primary",
         highlighted: true,
-        recommended: true,
-        price: "₹ —,———",
+        price: "₹20,000",
         period: "one-time",
         features: [
-          { text: "Full Campaign Strategy", included: true },
-          { text: "Advanced Audience Segmentation", included: true },
-          { text: "6 Ad Creatives (Image + Video)", included: true },
-          { text: "Pixel + Conversion API Setup", included: true },
-          { text: "Persuasive Ad Copywriting", included: true },
+          { text: "Full Campaign Strategy & Architecture", included: true },
+          { text: "Audience Research & Targeting Setup", included: true },
+          { text: "6 Ad Creatives — 4 Static + 2 Video", included: true },
+          { text: "Facebook Pixel + Conversion API Setup", included: true },
+          { text: "Persuasive Ad Copywriting for All Ads", included: true },
           { text: "Retargeting Audiences Setup", included: true },
-          { text: "First-Month Optimisation Included", included: true },
+          { text: "Campaign Launch & Initial Configuration", included: true },
         ],
       },
     ],
     maintenance: {
       name: "Facebook Ads Management",
       icon: "manage_accounts",
-      desc: "Hands-off ad management — we test, optimise, and scale your campaigns every week.",
-      price: "₹ —,———",
+      desc: "Fresh creatives every fortnight + hands-on optimisation to keep your campaigns profitable.",
+      price: "₹30,000 or 20% of ad budget",
       period: "/ month",
       perks: [
+        "2–3 new video creatives every 2 weeks",
         "Weekly performance review & reporting",
         "Continuous A/B creative testing",
         "Budget scaling & bid optimisation",
         "New audience exploration monthly",
-        "Fresh creatives every 30 days",
       ],
     },
   },
@@ -157,38 +122,20 @@ const categories = [
     glowClass: "shadow-[0_0_60px_rgba(138,43,226,0.08)]",
     plans: [
       {
-        name: "Search Launch",
-        tag: "Creation",
-        tagColor: "text-secondary",
-        highlighted: false,
-        price: "₹ —,———",
-        period: "one-time",
-        features: [
-          { text: "Keyword Research & Strategy", included: true },
-          { text: "Search Campaign Build", included: true },
-          { text: "Ad Copywriting (3 variations)", included: true },
-          { text: "Conversion Tracking Setup", included: true },
-          { text: "Negative Keyword List", included: true },
-          { text: "Display / Remarketing Campaign", included: false },
-          { text: "Ongoing Optimisation", included: false },
-        ],
-      },
-      {
-        name: "Full Funnel Search",
-        tag: "Creation + Display",
+        name: "Search Launch Pack",
+        tag: "One-Time Creation",
         tagColor: "text-secondary",
         highlighted: true,
-        recommended: true,
-        price: "₹ —,———",
+        price: "₹30,000",
         period: "one-time",
         features: [
-          { text: "In-depth Keyword Research", included: true },
-          { text: "Search + Performance Max Setup", included: true },
+          { text: "In-depth Keyword Research & Strategy", included: true },
+          { text: "Search + Performance Max Campaign Build", included: true },
           { text: "Ad Copywriting (6 variations)", included: true },
-          { text: "Full Conversion & Call Tracking", included: true },
+          { text: "Full Conversion & Call Tracking Setup", included: true },
           { text: "Negative Keyword Sculpting", included: true },
           { text: "Display & Remarketing Campaign", included: true },
-          { text: "First-Month Optimisation Included", included: true },
+          { text: "Campaign Launch & Initial Configuration", included: true },
         ],
       },
     ],
@@ -196,7 +143,7 @@ const categories = [
       name: "Google Ads Management",
       icon: "query_stats",
       desc: "Active campaign management to lower your cost-per-click and raise conversions every month.",
-      price: "₹ —,———",
+      price: "₹40,000 or 20% of ad budget",
       period: "/ month",
       perks: [
         "Weekly bid & budget optimisation",
@@ -218,38 +165,20 @@ const categories = [
     glowClass: "shadow-[0_0_60px_rgba(0,245,255,0.08)]",
     plans: [
       {
-        name: "Launch Site",
-        tag: "Creation · Starter",
-        tagColor: "text-primary",
-        highlighted: false,
-        price: "₹ —,———",
-        period: "one-time",
-        features: [
-          { text: "Up to 5 Pages", included: true },
-          { text: "Mobile Responsive Design", included: true },
-          { text: "Contact Form Integration", included: true },
-          { text: "Basic SEO Setup", included: true },
-          { text: "Performance Optimisation", included: true },
-          { text: "Custom Animations", included: false },
-          { text: "CMS / Blog System", included: false },
-        ],
-      },
-      {
-        name: "Authority Site",
-        tag: "Creation · Full",
+        name: "Play Card Site",
+        tag: "Full Website Build",
         tagColor: "text-primary",
         highlighted: true,
-        recommended: true,
-        price: "₹ ——,———",
+        price: "₹49,997",
         period: "one-time",
         features: [
-          { text: "Up to 12 Pages", included: true },
           { text: "Bespoke UI/UX Design", included: true },
+          { text: "Mobile Responsive & Fast", included: true },
           { text: "Custom Animations & Interactions", included: true },
           { text: "Full SEO & Schema Markup", included: true },
-          { text: "CMS / Blog System", included: true },
           { text: "Lead Capture & CRM Integration", included: true },
-          { text: "3 Months Maintenance Included", included: true },
+          { text: "Contact Forms & WhatsApp Integration", included: true },
+          { text: "3 Months Free Maintenance Included", included: true },
         ],
       },
     ],
@@ -257,7 +186,7 @@ const categories = [
       name: "Website Maintenance",
       icon: "health_and_safety",
       desc: "Keep your site fast, secure, and up to date — we handle everything technical.",
-      price: "₹ —,———",
+      price: "₹9,997",
       period: "/ month",
       perks: [
         "Content updates & page edits",
@@ -300,10 +229,6 @@ function PlanCard({ plan, accent }) {
             <span className="font-headline text-3xl font-medium text-white tracking-tight">{plan.price}</span>
           </div>
           <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest">{plan.period}</span>
-          <div className="mt-2 inline-flex items-center gap-2 bg-white/[0.04] border border-white/5 rounded-full px-3 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse"></span>
-            <span className="font-mono text-[9px] text-text-dim uppercase tracking-widest">Pricing coming soon</span>
-          </div>
         </div>
 
         {/* Features */}
@@ -378,14 +303,10 @@ function MaintenanceCard({ data, accentClass, borderClass, bgClass }) {
         </div>
 
         {/* Price + CTA */}
-        <div className="flex-shrink-0 flex flex-col items-start md:items-end justify-between gap-6 min-w-[160px]">
+        <div className="flex-shrink-0 flex flex-col items-start md:items-end justify-between gap-6 min-w-[200px]">
           <div className="text-right">
-            <div className="font-headline text-2xl font-medium text-white">{data.price}</div>
-            <div className="font-mono text-[10px] text-text-dim uppercase tracking-widest">{data.period}</div>
-            <div className="mt-2 inline-flex items-center gap-1.5 bg-white/[0.04] border border-white/5 rounded-full px-3 py-1">
-              <span className={`w-1.5 h-1.5 rounded-full ${accentClass.replace("text-", "bg-")} animate-pulse`}></span>
-              <span className="font-mono text-[9px] text-text-dim uppercase tracking-widest">Soon</span>
-            </div>
+            <div className="font-headline text-xl font-medium text-white leading-tight">{data.price}</div>
+            <div className="font-mono text-[10px] text-text-dim uppercase tracking-widest mt-1">{data.period}</div>
           </div>
           <Link
             to="/webinar"
@@ -464,10 +385,9 @@ export default function Pricing() {
             Every service built for conversion. Choose a one-time build, an ongoing retainer, or stack both for compounding results.
           </p>
 
-          {/* Pricing coming soon badge */}
           <div className="mt-8 inline-flex items-center gap-3 glass-panel border border-white/5 rounded-full px-6 py-3">
             <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-            <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest">Pricing reveal coming soon — join the webinar for exclusive rates</span>
+            <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest">Webinar attendees get exclusive session-only pricing</span>
           </div>
         </div>
 

@@ -199,8 +199,61 @@ const categories = [
   },
 ];
 
-// ── CARD ──────────────────────────────────────────────────────────────────
-function PlanCard({ plan, accent }) {
+// ── SINGLE PLAN (wide horizontal layout) ─────────────────────────────────
+function SinglePlanLayout({ plan, active }) {
+  return (
+    <div className="anim-card glow-card glass-panel-accent rounded-2xl border border-primary/20 overflow-hidden mb-8"
+      style={{ borderTopColor: active.accentClass === "text-secondary" ? "rgba(138,43,226,0.6)" : "rgba(0,245,255,0.6)", borderTopWidth: "2px" }}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        {/* Left — plan details */}
+        <div className="p-10 md:p-14 flex flex-col border-b lg:border-b-0 lg:border-r border-white/5">
+          <p className={`font-mono text-[10px] uppercase tracking-widest mb-3 ${plan.tagColor}`}>{plan.tag}</p>
+          <h2 className="font-headline text-3xl md:text-4xl font-medium text-white mb-2">{plan.name}</h2>
+
+          {/* Price */}
+          <div className="flex items-baseline gap-3 mt-6 mb-2">
+            <span className={`font-headline text-5xl md:text-6xl font-medium tracking-tight ${active.accentClass}`}>{plan.price}</span>
+          </div>
+          <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest mb-10">{plan.period}</span>
+
+          {/* CTA */}
+          <Link
+            to="/webinar"
+            className={`btn-magnetic relative font-mono text-sm uppercase tracking-widest font-bold px-10 py-5 group overflow-hidden bg-white hover:bg-transparent transition-colors duration-500 rounded-sm text-center mt-auto`}
+          >
+            <span className="relative z-10 group-hover:text-primary transition-colors duration-300 flex items-center justify-center gap-3">
+              Get Started
+              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            </span>
+            <div className={`absolute inset-0 border ${active.borderClass} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+            <div className="absolute inset-0 bg-primary/5 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
+          </Link>
+        </div>
+
+        {/* Right — features grid */}
+        <div className="p-10 md:p-14 flex flex-col">
+          <p className="font-mono text-[10px] text-text-dim uppercase tracking-widest mb-8">Everything included</p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5 flex-grow">
+            {plan.features.map((f, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <div className={`w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center ${active.bgClass} border ${active.borderClass}`}>
+                  <span className={`material-symbols-outlined text-sm ${active.accentClass}`}>check</span>
+                </div>
+                <div className="pt-1">
+                  <span className="font-body text-sm text-text-main leading-relaxed">{f.text}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── PLAN CARD (used for 2-plan tabs like Funnels) ─────────────────────────
+function PlanCard({ plan, accent, active }) {
   const isHighlighted = plan.highlighted;
   return (
     <div
@@ -225,10 +278,10 @@ function PlanCard({ plan, accent }) {
 
         {/* Price */}
         <div className="mb-8 pb-6 border-b border-white/5">
-          <div className="flex items-baseline gap-2">
-            <span className="font-headline text-3xl font-medium text-white tracking-tight">{plan.price}</span>
+          <span className={`font-headline text-4xl font-medium tracking-tight ${isHighlighted ? "text-primary" : "text-white"}`}>{plan.price}</span>
+          <div className="mt-1">
+            <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest">{plan.period}</span>
           </div>
-          <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest">{plan.period}</span>
         </div>
 
         {/* Features */}
@@ -273,48 +326,61 @@ function PlanCard({ plan, accent }) {
 // ── MAINTENANCE CARD ──────────────────────────────────────────────────────
 function MaintenanceCard({ data, accentClass, borderClass, bgClass }) {
   return (
-    <div className={`glass-panel glow-card anim-card rounded-2xl border ${borderClass} overflow-hidden flex flex-col md:flex-row`}>
-      {/* Left accent strip */}
-      <div className={`${bgClass} w-full md:w-2 flex-shrink-0`}></div>
+    <div className={`glass-panel glow-card anim-card rounded-2xl border-t-2 ${borderClass} overflow-hidden`}
+      style={{ borderTopWidth: "2px" }}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-3">
 
-      <div className="p-8 md:p-10 flex flex-col md:flex-row gap-8 flex-grow">
-        {/* Icon + name */}
-        <div className="flex-shrink-0 flex flex-col items-start gap-4">
+        {/* Left — identity */}
+        <div className={`p-10 flex flex-col gap-6 border-b lg:border-b-0 lg:border-r border-white/5 ${bgClass} bg-opacity-30`}>
           <div className={`w-14 h-14 rounded-xl ${bgClass} border ${borderClass} flex items-center justify-center`}>
             <span className={`material-symbols-outlined text-2xl ${accentClass}`}>{data.icon}</span>
           </div>
           <div>
-            <h3 className="font-headline text-lg font-medium text-white">{data.name}</h3>
-            <p className="font-mono text-[10px] text-text-dim uppercase tracking-widest mt-1">Monthly Retainer</p>
+            <p className="font-mono text-[10px] text-text-dim uppercase tracking-widest mb-2">Monthly Retainer</p>
+            <h3 className="font-headline text-2xl font-medium text-white">{data.name}</h3>
+            <p className="font-body text-sm text-text-muted font-light leading-relaxed mt-3">{data.desc}</p>
           </div>
         </div>
 
-        {/* Description + perks */}
-        <div className="flex-grow">
-          <p className="font-body text-sm text-text-muted font-light leading-relaxed mb-6">{data.desc}</p>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* Middle — perks */}
+        <div className="p-10 border-b lg:border-b-0 lg:border-r border-white/5">
+          <p className="font-mono text-[10px] text-text-dim uppercase tracking-widest mb-6">What's included</p>
+          <ul className="space-y-4">
             {data.perks.map((p, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className={`material-symbols-outlined text-sm mt-0.5 flex-shrink-0 ${accentClass}`}>check_small</span>
-                <span className="font-body text-xs text-text-muted">{p}</span>
+              <li key={i} className="flex items-start gap-3">
+                <div className={`w-6 h-6 rounded-md flex-shrink-0 flex items-center justify-center ${bgClass} border ${borderClass} mt-0.5`}>
+                  <span className={`material-symbols-outlined text-xs ${accentClass}`}>check</span>
+                </div>
+                <span className="font-body text-sm text-text-muted leading-relaxed">{p}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Price + CTA */}
-        <div className="flex-shrink-0 flex flex-col items-start md:items-end justify-between gap-6 min-w-[200px]">
-          <div className="text-right">
-            <div className="font-headline text-xl font-medium text-white leading-tight">{data.price}</div>
-            <div className="font-mono text-[10px] text-text-dim uppercase tracking-widest mt-1">{data.period}</div>
+        {/* Right — price + CTA */}
+        <div className="p-10 flex flex-col justify-between gap-8">
+          <div>
+            <p className="font-mono text-[10px] text-text-dim uppercase tracking-widest mb-4">Monthly investment</p>
+            <div className={`font-headline text-3xl font-medium leading-tight ${accentClass}`}>{data.price}</div>
+            <div className="font-mono text-[10px] text-text-dim uppercase tracking-widest mt-2">{data.period}</div>
           </div>
-          <Link
-            to="/webinar"
-            className={`btn-magnetic font-mono text-[10px] uppercase tracking-widest border ${borderClass} px-6 py-3 rounded-sm ${accentClass} hover:opacity-80 transition-opacity whitespace-nowrap`}
-          >
-            Enquire Now
-          </Link>
+          <div className="space-y-3">
+            <Link
+              to="/webinar"
+              className={`btn-magnetic w-full relative font-mono text-xs uppercase tracking-widest font-bold px-8 py-4 group overflow-hidden bg-white hover:bg-transparent text-background transition-colors duration-500 rounded-sm text-center block`}
+            >
+              <span className="relative z-10 group-hover:text-primary transition-colors duration-300 flex items-center justify-center gap-2">
+                Enquire Now
+                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </span>
+              <div className={`absolute inset-0 border ${borderClass} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+              <div className="absolute inset-0 bg-primary/5 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
+            </Link>
+            <p className="font-mono text-[9px] text-text-dim text-center uppercase tracking-widest">Cancel anytime · 30 days notice</p>
+          </div>
         </div>
+
       </div>
     </div>
   );
@@ -428,21 +494,26 @@ export default function Pricing() {
         </div>
 
         {/* ── PLAN CARDS ── */}
-        <div className={`grid gap-6 mb-8 ${active.plans.length === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto"}`}>
-          {active.plans.map((plan, i) => (
-            <PlanCard key={i} plan={plan} accent={active.accentColor} />
-          ))}
-        </div>
+        {active.plans.length === 1 ? (
+          <SinglePlanLayout plan={active.plans[0]} active={active} />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {active.plans.map((plan, i) => (
+              <PlanCard key={i} plan={plan} accent={active.accentColor} active={active} />
+            ))}
+          </div>
+        )}
 
         {/* ── MAINTENANCE CARD ── */}
-        <div className="mb-8 anim-card">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="w-full h-[1px] bg-white/5"></span>
-            <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest whitespace-nowrap flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm text-text-dim">autorenew</span>
-              Monthly Retainer
-            </span>
-            <span className="w-full h-[1px] bg-white/5"></span>
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-6">
+            <div className={`w-8 h-8 rounded-lg ${active.bgClass} border ${active.borderClass} flex items-center justify-center flex-shrink-0`}>
+              <span className={`material-symbols-outlined text-sm ${active.accentClass}`}>autorenew</span>
+            </div>
+            <div>
+              <p className="font-headline text-lg font-medium text-white">Monthly Retainer</p>
+              <p className="font-mono text-[10px] text-text-dim uppercase tracking-widest">Ongoing management & optimisation</p>
+            </div>
           </div>
           <MaintenanceCard
             data={active.maintenance}

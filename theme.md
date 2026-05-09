@@ -1,4 +1,4 @@
-# Autofunnel Labs Theme
+# ShapeOdyssey Theme
 
 ## Brand mood
 Futuristic, high-contrast, neon-on-black with glass panels, soft glows, and subtle noise and grid texture. The UI should feel premium and technical, with restrained accents that highlight actions and featured content.

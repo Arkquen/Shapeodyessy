@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import FunnelHero from "../components/FunnelHero";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -30,35 +31,7 @@ export default function Home() {
       scrollTrigger: { trigger: "body", start: "top top", end: "bottom top", scrub: true },
     });
 
-    // 1.5 INTERACTIVE 3D STACK
-    const stack = document.getElementById("interactive-stack");
-    const layers = document.querySelectorAll(".stack-layer");
-
-    if (stack && layers.length > 0) {
-      gsap.set(stack, { rotationX: 55, rotationY: -15, rotationZ: 0 });
-
-      layers.forEach((layer, i) => {
-        const targetZ = i * 20;
-        const targetOpacity = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.94, 0.98, 1][i] || 1;
-        gsap.set(layer, { z: 0, opacity: 0 });
-        gsap.to(layer, { z: targetZ, opacity: targetOpacity, duration: 1.5, ease: "back.out(1.2)", delay: 1.2 + i * 0.1 });
-      });
-
-      let resetTimeout;
-      const onMouseMove = (e) => {
-        clearTimeout(resetTimeout);
-        const x = (e.clientX / window.innerWidth - 0.5) * 2;
-        const y = (e.clientY / window.innerHeight - 0.5) * 2;
-        gsap.to(stack, { rotationX: 55 - y * 20, rotationY: -15 - x * 25, rotationZ: 0, duration: 0.8, ease: "power2.out" });
-        gsap.to(layers, { z: (i) => i * (25 + (Math.abs(x) + Math.abs(y)) * 5), duration: 0.8, ease: "power2.out" });
-        resetTimeout = setTimeout(() => {
-          gsap.to(stack, { rotationX: 55, rotationY: -15, rotationZ: 0, duration: 1.5, ease: "elastic.out(1, 0.5)" });
-          gsap.to(layers, { z: (i) => i * 20, duration: 1.5, ease: "elastic.out(1, 0.5)" });
-        }, 2000);
-      };
-      window.addEventListener("mousemove", onMouseMove);
-      window.__homeCleanup = () => { window.removeEventListener("mousemove", onMouseMove); clearTimeout(resetTimeout); };
-    }
+    // 3D Funnel is handled by FunnelHero canvas component
 
     // 2. PROBLEM SECTION
     gsap.to(".problem-text-content", {
@@ -140,7 +113,6 @@ export default function Home() {
     });
 
     return () => {
-      if (window.__homeCleanup) { window.__homeCleanup(); delete window.__homeCleanup; }
       ScrollTrigger.getAll().forEach((st) => st.kill());
       gsap.killTweensOf("*");
     };
@@ -155,7 +127,7 @@ export default function Home() {
         <div className="ambient-orb w-[800px] h-[800px] bg-primary/10 top-[-20%] left-[-10%] mix-blend-screen" id="hero-orb-1"></div>
         <div className="ambient-orb w-[600px] h-[600px] bg-secondary/10 bottom-[10%] right-[-5%] mix-blend-screen" id="hero-orb-2"></div>
 
-        <div className="max-w-[1400px] mx-auto px-8 md:px-16 w-full flex flex-col lg:flex-row items-center justify-between relative z-10 pt-32 gap-16">
+        <div className="max-w-[1400px] mx-auto px-8 md:px-16 w-full flex flex-col lg:flex-row items-center relative z-10 pt-32 gap-8 lg:gap-16">
           <div className="flex-1 flex flex-col items-start w-full">
             <div className="clip-text-container mb-8">
               <p className="font-mono text-primary tracking-widest uppercase text-xs flex items-center gap-4 hero-anim">
@@ -184,22 +156,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex w-full lg:w-[450px] h-[280px] md:h-[400px] lg:h-[600px] perspective-container items-center justify-center relative hero-fade z-20 mt-16 md:mt-12 lg:mt-0 lg:translate-x-16 lg:translate-y-12" id="stack-container">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/20 blur-[100px] rounded-full pointer-events-none"></div>
-            <div id="interactive-stack" className="relative w-44 h-44 md:w-64 md:h-64 preserve-3d">
-              <div className="stack-layer stack-layer-1"></div>
-              <div className="stack-layer stack-layer-2"></div>
-              <div className="stack-layer stack-layer-3"></div>
-              <div className="stack-layer stack-layer-4"></div>
-              <div className="stack-layer stack-layer-5"></div>
-              <div className="stack-layer stack-layer-6"></div>
-              <div className="stack-layer stack-layer-7"></div>
-              <div className="stack-layer stack-layer-8"></div>
-              <div className="stack-layer stack-layer-9"></div>
-              <div className="stack-layer stack-layer-10"></div>
-              <div className="stack-layer stack-layer-11"></div>
-              <div className="stack-layer stack-layer-12"></div>
-            </div>
+          <div className="flex-shrink-0 w-full lg:w-[680px] xl:w-[760px] h-[480px] md:h-[580px] lg:h-[680px] relative hero-fade z-20 lg:-mt-40 lg:translate-x-20">
+            <FunnelHero />
           </div>
         </div>
       </section>

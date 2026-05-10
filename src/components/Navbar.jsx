@@ -1,190 +1,184 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 
+const logoUrl = "/assets/logo.png";
+
+const navLinks = [
+  { label: "Features", to: "/",        activeCheck: (p) => p === "/" },
+  { label: "Ads",      to: "/ads",     activeCheck: (p) => p === "/ads" },
+  { label: "Plans",    to: "/pricing", activeCheck: (p) => p === "/pricing" },
+  { label: "Webinar",  to: "/webinar", activeCheck: (p) => p === "/webinar" },
+];
+
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
-  const isPricing = location.pathname === "/pricing";
-  const isWebinar = location.pathname === "/webinar";
-  const isAds = location.pathname === "/ads";
+  const [scrolled,    setScrolled]    = useState(false);
+  const [mobileOpen,  setMobileOpen]  = useState(false);
+  const location   = useLocation();
   const mobileMenuRef = useRef(null);
-  const overlayRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
   }, [mobileOpen]);
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [location]);
+  useEffect(() => { setMobileOpen(false); }, [location]);
 
   const closeMobile = () => setMobileOpen(false);
+  const pathname    = location.pathname;
 
   return (
     <>
-      <nav
-        id="navbar"
-        className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${
-          scrolled ? "border-white/10" : "border-white/[0.02]"
-        }`}
-      >
-        <div className="absolute inset-0 bg-background/70 backdrop-blur-xl"></div>
-        <div className="flex justify-between items-center px-8 md:px-16 w-full mx-auto h-20 relative z-10 max-w-[1800px]">
-          <div className="flex items-center gap-4">
-            <Link className="flex items-center group" to="/">
-              <img
-                src="/assets/logo.png"
-                alt="ShapeOdyssey"
-                className="h-10 md:h-12 transform group-hover:scale-105 transition-transform duration-300"
-              />
-            </Link>
+      {/* ── DESKTOP NAV ─────────────────────────────────────────── */}
+      <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-6">
+        <div
+          className="w-full max-w-[900px] flex items-center justify-between gap-3 px-3 py-2 rounded-2xl transition-all duration-500"
+          style={{
+            background: scrolled
+              ? "rgba(10,10,12,0.85)"
+              : "rgba(10,10,12,0.65)",
+            backdropFilter: "blur(24px)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            boxShadow: scrolled
+              ? "0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)"
+              : "0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)",
+          }}
+        >
+          {/* Logo */}
+          <Link to="/" className="flex items-center flex-shrink-0 group ml-1">
+            <img
+              src={logoUrl}
+              alt="ShapeOdyssey"
+              className="h-9 group-hover:scale-105 transition-transform duration-300"
+            />
+          </Link>
+
+          {/* Nav pills — desktop only */}
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => {
+              const isActive = link.activeCheck(pathname);
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="relative px-5 py-2 rounded-xl font-mono text-[11px] uppercase tracking-widest transition-all duration-300"
+                  style={{
+                    background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+                    color: isActive ? "#ffffff" : "rgba(161,161,170,0.8)",
+                    border: isActive ? "1px solid rgba(255,255,255,0.12)" : "1px solid transparent",
+                    boxShadow: isActive ? "inset 0 1px 0 rgba(255,255,255,0.1)" : "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) e.currentTarget.style.color = "#ffffff";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) e.currentTarget.style.color = "rgba(161,161,170,0.8)";
+                  }}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </div>
 
-          <div className="hidden md:flex gap-12 items-center">
+          {/* CTA + Mobile Burger */}
+          <div className="flex items-center gap-2">
             <Link
-              className={`font-mono text-xs tracking-widest uppercase transition-all duration-300 ${
-                !isPricing && !isWebinar && !isAds ? "text-white" : "text-text-muted hover:text-white"
-              }`}
-              to="/"
-            >
-              Features
-            </Link>
-            <Link
-              className={`font-mono text-xs tracking-widest uppercase transition-all duration-300 ${
-                isAds ? "text-primary" : "text-text-muted hover:text-white"
-              }`}
-              to="/ads"
-            >
-              Ads
-            </Link>
-            <Link
-              className={`font-mono text-xs tracking-widest uppercase transition-all duration-300 ${
-                isPricing ? "text-primary" : "text-text-muted hover:text-white"
-              }`}
-              to="/pricing"
-            >
-              Plans
-            </Link>
-            <Link
-              className={`font-mono text-xs tracking-widest uppercase transition-all duration-300 ${
-                isWebinar ? "text-secondary" : "text-text-muted hover:text-white"
-              }`}
               to="/webinar"
+              className="hidden md:flex items-center font-mono text-[11px] uppercase tracking-widest px-5 py-2 rounded-xl transition-all duration-300 flex-shrink-0"
+              style={{
+                background: "rgba(0,245,255,0.1)",
+                border: "1px solid rgba(0,245,255,0.25)",
+                color: "#00F5FF",
+                boxShadow: "0 0 16px rgba(0,245,255,0.08)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(0,245,255,0.18)";
+                e.currentTarget.style.boxShadow  = "0 0 24px rgba(0,245,255,0.18)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(0,245,255,0.1)";
+                e.currentTarget.style.boxShadow  = "0 0 16px rgba(0,245,255,0.08)";
+              }}
             >
-              Webinar
+              Register for Webinar
             </Link>
-          </div>
 
-          <div className="hidden md:flex gap-6 items-center">
-            <Link
-              to={isPricing ? "/#webinar" : "#webinar"}
-              className="btn-magnetic relative font-mono text-xs uppercase tracking-widest text-white px-8 py-3 group overflow-hidden border border-white/10 hover:border-primary/50 transition-colors duration-500 rounded-sm"
+            {/* Hamburger */}
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="flex md:hidden w-9 h-9 rounded-xl items-center justify-center flex-col gap-[5px] transition-colors"
+              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+              aria-label="Open menu"
             >
-              <span className="relative z-10 group-hover:text-primary transition-colors duration-300">
-                Register for Webinar
-              </span>
-              <div className="absolute inset-0 bg-primary/10 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
-            </Link>
+              <span className="w-4 h-[1.5px] bg-white rounded-full block"></span>
+              <span className="w-4 h-[1.5px] bg-white rounded-full block"></span>
+              <span className="w-4 h-[1.5px] bg-white rounded-full block"></span>
+            </button>
           </div>
-
-          {/* Mobile Hamburger */}
-          <button
-            id="mobile-menu-btn"
-            onClick={() => setMobileOpen(true)}
-            className="flex md:hidden relative z-50 w-10 h-10 flex-col items-center justify-center gap-[5px]"
-            aria-label="Open menu"
-          >
-            <span className="hamburger-line w-5 h-[1.5px] bg-white rounded-full block"></span>
-            <span className="hamburger-line w-5 h-[1.5px] bg-white rounded-full block"></span>
-            <span className="hamburger-line w-5 h-[1.5px] bg-white rounded-full block"></span>
-          </button>
         </div>
       </nav>
 
-      {/* Mobile Menu Drawer */}
+      {/* ── MOBILE DRAWER ───────────────────────────────────────── */}
       <div
-        id="mobile-menu"
         ref={mobileMenuRef}
-        className={`mobile-menu fixed inset-y-0 right-0 w-[75vw] max-w-[320px] bg-surface/95 backdrop-blur-2xl z-[60] flex flex-col pt-24 px-8 border-l border-white/5 ${
-          mobileOpen ? "open" : ""
-        }`}
+        className={`mobile-menu fixed inset-y-0 right-0 w-[75vw] max-w-[300px] z-[60] flex flex-col pt-24 px-8 border-l border-white/5 ${mobileOpen ? "open" : ""}`}
+        style={{ background: "rgba(8,8,12,0.97)", backdropFilter: "blur(24px)" }}
       >
         <button
-          id="mobile-menu-close"
           onClick={closeMobile}
-          className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-text-muted hover:text-white transition-colors"
+          className="absolute top-6 right-6 w-9 h-9 rounded-xl flex items-center justify-center text-text-muted hover:text-white transition-colors"
+          style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
         >
-          <span className="material-symbols-outlined">close</span>
+          <span className="material-symbols-outlined text-xl">close</span>
         </button>
-        <div className="flex flex-col gap-8">
-          <Link
-            className="font-mono text-sm tracking-widest uppercase text-text-muted hover:text-white transition-all duration-300"
-            to="/"
-            onClick={closeMobile}
-          >
-            Features
-          </Link>
-          <Link
-            className={`font-mono text-sm tracking-widest uppercase transition-all duration-300 ${
-              isAds ? "text-primary" : "text-text-muted hover:text-white"
-            }`}
-            to="/ads"
-            onClick={closeMobile}
-          >
-            Ads
-          </Link>
-          <Link
-            className={`font-mono text-sm tracking-widest uppercase transition-all duration-300 ${
-              isPricing ? "text-primary" : "text-text-muted hover:text-white"
-            }`}
-            to="/pricing"
-            onClick={closeMobile}
-          >
-            Plans
-          </Link>
-          <Link
-            className={`font-mono text-sm tracking-widest uppercase transition-all duration-300 ${
-              isWebinar ? "text-secondary" : "text-text-muted hover:text-white"
-            }`}
-            to="/webinar"
-            onClick={closeMobile}
-          >
-            Webinar
-          </Link>
-          <div className="w-full h-[1px] bg-white/5"></div>
-          <Link
-            to={isPricing ? "/#webinar" : "#webinar"}
-            onClick={closeMobile}
-            className="font-mono text-xs uppercase tracking-widest text-primary border border-primary/30 px-6 py-3 text-center hover:bg-primary/10 transition-colors rounded-sm"
-          >
-            Register for Webinar
-          </Link>
+
+        <div className="flex flex-col gap-2 mb-8">
+          {navLinks.map((link) => {
+            const isActive = link.activeCheck(pathname);
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={closeMobile}
+                className="px-5 py-3 rounded-xl font-mono text-sm uppercase tracking-widest transition-all duration-300"
+                style={{
+                  background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+                  color: isActive ? "#ffffff" : "rgba(161,161,170,0.7)",
+                  border: isActive ? "1px solid rgba(255,255,255,0.1)" : "1px solid transparent",
+                }}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
+
+        <div className="w-full h-[1px] bg-white/5 mb-8"></div>
+
+        <Link
+          to="/webinar"
+          onClick={closeMobile}
+          className="px-5 py-3 rounded-xl font-mono text-sm uppercase tracking-widest text-center transition-all duration-300"
+          style={{
+            background: "rgba(0,245,255,0.1)",
+            border: "1px solid rgba(0,245,255,0.25)",
+            color: "#00F5FF",
+          }}
+        >
+          Register for Webinar
+        </Link>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Overlay */}
       <div
-        id="mobile-menu-overlay"
-        ref={overlayRef}
         onClick={closeMobile}
-        className={`fixed inset-0 bg-black/60 z-[55] transition-opacity duration-300 ${
-          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-      ></div>
+        className={`fixed inset-0 bg-black/60 z-[55] transition-opacity duration-300 ${mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+      />
     </>
   );
 }

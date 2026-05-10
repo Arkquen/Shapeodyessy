@@ -457,28 +457,65 @@ export default function Pricing() {
           </div>
         </div>
 
-        {/* ── SHAPE ODYSSEY TAB STRIP ── */}
+        {/* ── TAB STRIP ── */}
         <div className="flex justify-center mb-16 anim-fade-up">
-          <div className="glass-panel border border-white/5 rounded-2xl p-2 flex flex-wrap gap-2 justify-center">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveTab(cat.id)}
-                className={`relative flex items-center gap-2.5 px-5 py-3 rounded-xl font-mono text-[11px] uppercase tracking-widest transition-all duration-300 group
-                  ${activeTab === cat.id
-                    ? "bg-white/10 text-white border border-white/15"
-                    : "text-text-dim hover:text-white hover:bg-white/5"
-                  }`}
-              >
-                <span className={`material-symbols-outlined text-base transition-colors duration-300 ${activeTab === cat.id ? cat.accentClass : "text-text-dim group-hover:text-white"}`}>
-                  {cat.icon}
-                </span>
-                {cat.label}
-                {activeTab === cat.id && (
-                  <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${cat.accentClass.replace("text-", "bg-")}`}></span>
-                )}
-              </button>
-            ))}
+          <div
+            className="flex gap-1 p-1.5 rounded-2xl"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              backdropFilter: "blur(20px)",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)",
+            }}
+          >
+            {categories.map((cat) => {
+              const isActive = activeTab === cat.id;
+              const isCyan   = cat.accentClass === "text-primary";
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveTab(cat.id)}
+                  className="relative flex flex-col items-center gap-1.5 px-6 py-3 rounded-xl font-mono text-[10px] uppercase tracking-widest transition-all duration-300 group select-none"
+                  style={
+                    isActive
+                      ? {
+                          background: isCyan
+                            ? "linear-gradient(145deg, rgba(0,245,255,0.18), rgba(0,200,220,0.10))"
+                            : "linear-gradient(145deg, rgba(138,43,226,0.22), rgba(100,30,180,0.12))",
+                          border: `1px solid ${isCyan ? "rgba(0,245,255,0.3)" : "rgba(138,43,226,0.35)"}`,
+                          boxShadow: isCyan
+                            ? "0 0 20px rgba(0,245,255,0.1), inset 0 1px 0 rgba(0,245,255,0.15)"
+                            : "0 0 20px rgba(138,43,226,0.12), inset 0 1px 0 rgba(138,43,226,0.18)",
+                        }
+                      : {
+                          background: "transparent",
+                          border: "1px solid transparent",
+                        }
+                  }
+                >
+                  <span
+                    className={`material-symbols-outlined transition-all duration-300`}
+                    style={{
+                      fontSize: "22px",
+                      color: isActive
+                        ? isCyan ? "#00F5FF" : "#8A2BE2"
+                        : "rgba(161,161,170,0.7)",
+                      filter: isActive
+                        ? isCyan ? "drop-shadow(0 0 6px rgba(0,245,255,0.7))" : "drop-shadow(0 0 6px rgba(138,43,226,0.7))"
+                        : "none",
+                    }}
+                  >
+                    {cat.icon}
+                  </span>
+                  <span
+                    className="transition-colors duration-300"
+                    style={{ color: isActive ? "#ffffff" : "rgba(161,161,170,0.6)" }}
+                  >
+                    {cat.label}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 

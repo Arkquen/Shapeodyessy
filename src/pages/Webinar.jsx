@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,10 +66,10 @@ const agenda = [
 ];
 
 const services = [
-  { icon: "filter_alt", title: "Sales Funnel Build", desc: "End-to-end funnel design, copy, and automation. Landing page → CRM → follow-up → close.", tag: "Most Popular", tagColor: "bg-primary/20 text-primary border-primary/30", accentClass: "text-primary", borderClass: "border-primary/20", bgClass: "bg-primary/5" },
-  { icon: "campaign", title: "Facebook & Instagram Ads", desc: "Strategy, creative, targeting, and full campaign management. We handle everything — you collect the leads.", tag: "High ROI", tagColor: "bg-secondary/20 text-secondary border-secondary/30", accentClass: "text-secondary", borderClass: "border-secondary/20", bgClass: "bg-secondary/5" },
-  { icon: "ads_click", title: "Google Ads Management", desc: "Search, Display, and Performance Max campaigns managed and optimised for your specific goals.", tag: null, tagColor: "", accentClass: "text-secondary", borderClass: "border-secondary/20", bgClass: "bg-secondary/5" },
-  { icon: "web", title: "Website Development", desc: "Custom, interactive websites and landing pages built to convert visitors into leads and clients.", tag: "New", tagColor: "bg-white/10 text-white border-white/20", accentClass: "text-primary", borderClass: "border-primary/20", bgClass: "bg-primary/5" },
+  { icon: "filter_alt", title: "Sales Funnel Build",       desc: "End-to-end funnel design, copy, and automation. Landing page → CRM → follow-up → close.",                   note: null,                              tag: "Most Popular", tagColor: "bg-primary/20 text-primary border-primary/30",       accentClass: "text-primary",   borderClass: "border-primary/20",   bgClass: "bg-primary/5"   },
+  { icon: "campaign",   title: "Facebook & Instagram Ads", desc: "Strategy, creative, targeting, and full campaign management. We handle everything — you collect the leads.", note: "Management: ₹20,000 + 20% of ad budget", tag: "High ROI", tagColor: "bg-secondary/20 text-secondary border-secondary/30", accentClass: "text-secondary", borderClass: "border-secondary/20", bgClass: "bg-secondary/5" },
+  { icon: "ads_click",  title: "Google Ads Management",    desc: "Search, Display, and Performance Max campaigns managed and optimised for your specific goals.",               note: "Management: ₹30,000 + 20% of ad budget", tag: null,       tagColor: "",                                                    accentClass: "text-secondary", borderClass: "border-secondary/20", bgClass: "bg-secondary/5" },
+  { icon: "web",        title: "Website Development",      desc: "Custom, interactive websites and landing pages built to convert visitors into leads and clients.",            note: null,                              tag: "New",          tagColor: "bg-white/10 text-white border-white/20",              accentClass: "text-primary",   borderClass: "border-primary/20",   bgClass: "bg-primary/5"   },
 ];
 
 const faqs = [
@@ -97,6 +97,7 @@ const whatYoullLearn = [
 ];
 
 export default function Webinar() {
+  const navigate = useNavigate();
   const timeLeft = useCountdown();
   const [openFaq, setOpenFaq] = useState(null);
   const heroRef = useRef(null);
@@ -199,7 +200,7 @@ export default function Webinar() {
 
           {/* CTAs */}
           <div className="web-hero-anim flex flex-col sm:flex-row gap-4">
-            <a href="#register" className="btn-magnetic relative font-mono text-sm uppercase tracking-widest text-background font-bold px-12 py-5 group overflow-hidden bg-white hover:bg-transparent transition-colors duration-500 rounded-sm">
+            <a onClick={() => navigate("/webinar-form")} className="btn-magnetic relative font-mono text-sm uppercase tracking-widest text-background font-bold px-12 py-5 group overflow-hidden bg-white hover:bg-transparent transition-colors duration-500 rounded-sm">
               <span className="relative z-10 group-hover:text-primary transition-colors duration-300 flex items-center gap-3">
                 Reserve My Seat
                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -335,18 +336,26 @@ export default function Webinar() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {services.map((s, i) => (
-              <div key={i} className={`glass-panel glow-card rounded-xl p-8 md:p-10 flex gap-6 service-card hover-lift relative overflow-hidden border ${s.borderClass}`}>
+              <div key={i} className={`glass-panel glow-card rounded-xl p-8 md:p-10 flex flex-col gap-5 service-card hover-lift relative border ${s.borderClass}`}>
+                {/* Tag badge — inline at top, not absolute */}
                 {s.tag && (
-                  <div className={`absolute top-5 right-5 px-3 py-1 rounded-full border text-[9px] font-mono uppercase tracking-widest ${s.tagColor}`}>
-                    {s.tag}
+                  <div className="flex">
+                    <span className={`px-3 py-1 rounded text-[9px] font-mono uppercase tracking-widest border ${s.tagColor}`}>
+                      {s.tag}
+                    </span>
                   </div>
                 )}
-                <div className={`flex-shrink-0 w-14 h-14 rounded-xl border ${s.borderClass} ${s.bgClass} flex items-center justify-center`}>
-                  <span className={`material-symbols-outlined ${s.accentClass} text-2xl`}>{s.icon}</span>
-                </div>
-                <div>
-                  <h3 className="font-headline text-xl font-medium text-white mb-3">{s.title}</h3>
-                  <p className="font-body text-sm text-text-muted font-light leading-relaxed">{s.desc}</p>
+                <div className="flex gap-5 items-start">
+                  <div className={`flex-shrink-0 w-14 h-14 rounded-xl border ${s.borderClass} ${s.bgClass} flex items-center justify-center`}>
+                    <span className={`material-symbols-outlined ${s.accentClass} text-2xl`}>{s.icon}</span>
+                  </div>
+                  <div>
+                    <h3 className="font-headline text-xl font-medium text-white mb-2">{s.title}</h3>
+                    <p className="font-body text-sm text-text-muted font-light leading-relaxed">{s.desc}</p>
+                    {s.note && (
+                      <p className="font-mono text-[10px] text-text-dim uppercase tracking-widest mt-2">{s.note}</p>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -427,110 +436,56 @@ export default function Webinar() {
 
       <div className="section-divider mx-8 md:mx-16"></div>
 
-      {/* ── REGISTER ────────────────────────────────────────────────── */}
-      <section className="py-24 md:py-40 bg-[#030303] relative z-10 overflow-hidden" id="register">
+      {/* ── REGISTER CTA ────────────────────────────────────────────── */}
+      <section className="py-24 md:py-32 bg-[#030303] relative z-10 overflow-hidden" id="register">
         <div className="ambient-orb w-[800px] h-[600px] bg-secondary/8 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mix-blend-screen"></div>
 
-        <div className="max-w-[1400px] mx-auto px-8 md:px-16 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="max-w-[860px] mx-auto px-8 md:px-16 relative z-10 flex flex-col items-center text-center">
+          <p className="font-mono text-secondary tracking-widest uppercase text-xs flex items-center gap-4 mb-8 reveal-up">
+            <span className="w-8 h-[1px] bg-secondary"></span> Secure Your Spot <span className="w-8 h-[1px] bg-secondary"></span>
+          </p>
 
-            {/* Left — pitch */}
-            <div className="reveal-up">
-              <p className="font-mono text-secondary tracking-widest uppercase text-xs flex items-center gap-4 mb-8">
-                <span className="w-8 h-[1px] bg-secondary"></span> Secure Your Spot
-              </p>
-              <h2 className="text-3xl md:text-5xl font-headline font-medium tracking-tighter text-white mb-6 leading-[0.9]">
-                JOIN THE NEXT<br />LIVE SESSION.
-              </h2>
-              <p className="font-body text-text-muted font-light leading-relaxed mb-10">
-                Free to attend. Limited seats. Every Sunday at 4:00 PM IST. Register once and get reminders every week.
-              </p>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-headline font-medium tracking-tighter text-white mb-6 leading-[0.9] reveal-up">
+            JOIN THE NEXT<br />LIVE SESSION.
+          </h2>
 
-              {/* Next session info */}
-              <div className="glass-panel rounded-xl p-6 border border-white/5 mb-8">
-                <div className="flex items-center gap-3 mb-5">
-                  <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-                  <span className="font-mono text-[10px] text-secondary uppercase tracking-widest">Next Session Details</span>
-                </div>
-                <div className="space-y-4">
-                  {[
-                    { icon: "calendar_today", label: "Date", value: "Every Sunday" },
-                    { icon: "schedule", label: "Time", value: "4:00 PM IST (UTC+5:30)" },
-                    { icon: "videocam", label: "Format", value: "Live via Google Meet / Zoom" },
-                    { icon: "currency_rupee", label: "Cost", value: "Free — always" },
-                  ].map((d, i) => (
-                    <div key={i} className="flex items-center gap-4">
-                      <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
-                        <span className="material-symbols-outlined text-text-muted text-sm">{d.icon}</span>
-                      </div>
-                      <div className="flex justify-between w-full">
-                        <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest">{d.label}</span>
-                        <span className="font-body text-sm text-white">{d.value}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          <p className="font-body text-text-muted font-light leading-relaxed mb-10 max-w-xl reveal-up">
+            Free to attend. Limited seats. Every Sunday at 4:00 PM IST.<br />Register and get the session link on WhatsApp & email.
+          </p>
+
+          {/* Session details strip */}
+          <div className="flex flex-wrap justify-center gap-6 mb-12 reveal-up">
+            {[
+              { icon: "calendar_today", label: "Every Sunday" },
+              { icon: "schedule",       label: "4:00 PM IST" },
+              { icon: "videocam",       label: "Live on Meet / Zoom" },
+              { icon: "currency_rupee", label: "Always Free" },
+            ].map((d, i) => (
+              <div key={i} className="flex items-center gap-2 glass-panel border border-white/5 rounded-full px-5 py-2.5">
+                <span className="material-symbols-outlined text-text-muted text-sm">{d.icon}</span>
+                <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest">{d.label}</span>
               </div>
+            ))}
+          </div>
 
-              {/* Countdown mini */}
-              <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-primary text-sm">timer</span>
-                <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest">
-                  Next session: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m away
-                </span>
-              </div>
-            </div>
+          {/* CTA button — opens popup */}
+          <button
+            onClick={() => navigate("/webinar-form")}
+            className="btn-magnetic reveal-up relative font-mono text-sm uppercase tracking-widest text-background font-bold px-16 py-6 group overflow-hidden bg-white hover:bg-transparent transition-colors duration-500 rounded-sm mb-6"
+          >
+            <span className="relative z-10 group-hover:text-primary transition-colors duration-300 flex items-center gap-3">
+              Reserve My Free Seat
+              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            </span>
+            <div className="absolute inset-0 border border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-0 bg-primary/5 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
+          </button>
 
-            {/* Right — form */}
-            <div className="glass-panel rounded-xl p-8 md:p-10 reveal-up">
-              <h3 className="font-headline text-xl font-medium text-white mb-8">Register for Free</h3>
-
-              <div className="space-y-5">
-                <div>
-                  <label className="font-mono text-[10px] uppercase tracking-widest text-text-dim block mb-3">Full Name</label>
-                  <input type="text" placeholder="Your name" className="w-full bg-white/[0.03] border border-white/10 rounded-sm px-5 py-4 font-body text-sm text-white placeholder:text-text-dim focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all duration-300" />
-                </div>
-                <div>
-                  <label className="font-mono text-[10px] uppercase tracking-widest text-text-dim block mb-3">Email Address</label>
-                  <input type="email" placeholder="your@email.com" className="w-full bg-white/[0.03] border border-white/10 rounded-sm px-5 py-4 font-body text-sm text-white placeholder:text-text-dim focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all duration-300" />
-                </div>
-                <div>
-                  <label className="font-mono text-[10px] uppercase tracking-widest text-text-dim block mb-3">WhatsApp Number</label>
-                  <input type="tel" placeholder="+91 00000 00000" className="w-full bg-white/[0.03] border border-white/10 rounded-sm px-5 py-4 font-body text-sm text-white placeholder:text-text-dim focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all duration-300" />
-                </div>
-                <div>
-                  <label className="font-mono text-[10px] uppercase tracking-widest text-text-dim block mb-3">I'm interested in</label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {["Funnels", "Facebook Ads", "Google Ads", "Website Build"].map((opt) => (
-                      <label key={opt} className="flex items-center gap-3 cursor-pointer group">
-                        <input type="checkbox" className="hidden peer" />
-                        <div className="w-4 h-4 border border-white/20 rounded-sm flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary/20 transition-all group-hover:border-white/40 flex-shrink-0">
-                          <span className="material-symbols-outlined text-[12px] text-primary hidden peer-checked:block">check</span>
-                        </div>
-                        <span className="font-body text-xs text-text-muted group-hover:text-white transition-colors">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="font-mono text-[10px] uppercase tracking-widest text-text-dim block mb-3">Business Type <span className="text-text-dim">(optional)</span></label>
-                  <input type="text" placeholder="e.g. Real estate, coaching, e-commerce..." className="w-full bg-white/[0.03] border border-white/10 rounded-sm px-5 py-4 font-body text-sm text-white placeholder:text-text-dim focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all duration-300" />
-                </div>
-              </div>
-
-              <button className="btn-magnetic mt-8 w-full relative font-mono text-sm uppercase tracking-widest text-background font-bold px-12 py-5 group overflow-hidden bg-white hover:bg-transparent transition-colors duration-500 rounded-sm">
-                <span className="relative z-10 group-hover:text-primary transition-colors duration-300 flex items-center justify-center gap-3">
-                  Reserve My Free Seat
-                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </span>
-                <div className="absolute inset-0 border border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="absolute inset-0 bg-primary/5 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
-              </button>
-
-              <p className="font-mono text-[9px] text-text-dim text-center mt-5 uppercase tracking-widest">
-                Session link sent to your WhatsApp & email before every session.
-              </p>
-            </div>
+          <div className="flex items-center gap-3 reveal-up">
+            <span className="material-symbols-outlined text-primary text-sm">timer</span>
+            <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest">
+              Next session: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m away
+            </span>
           </div>
         </div>
       </section>

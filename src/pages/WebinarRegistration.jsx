@@ -66,10 +66,10 @@ const agenda = [
 ];
 
 const services = [
-  { icon: "filter_alt", title: "Sales Funnel Build",         desc: "End-to-end funnel design, copy, and automation. Landing page → CRM → follow-up → close.",                                     tag: "Most Popular", tagColor: "bg-primary/20 text-primary border-primary/30",   accentClass: "text-primary",   borderClass: "border-primary/20",   bgClass: "bg-primary/5"   },
-  { icon: "campaign",   title: "Facebook & Instagram Ads",   desc: "Strategy, creative, targeting, and full campaign management. We handle everything — you collect the leads.",                   tag: "High ROI",     tagColor: "bg-secondary/20 text-secondary border-secondary/30", accentClass: "text-secondary", borderClass: "border-secondary/20", bgClass: "bg-secondary/5" },
-  { icon: "ads_click",  title: "Google Ads Management",      desc: "Search, Display, and Performance Max campaigns managed and optimised for your specific goals.",                                tag: null,           tagColor: "",                                                  accentClass: "text-secondary", borderClass: "border-secondary/20", bgClass: "bg-secondary/5" },
-  { icon: "web",        title: "Website Development",        desc: "Custom, interactive websites and landing pages built to convert visitors into leads and clients.",                             tag: "New",          tagColor: "bg-white/10 text-white border-white/20",            accentClass: "text-primary",   borderClass: "border-primary/20",   bgClass: "bg-primary/5"   },
+  { icon: "filter_alt", title: "Sales Funnel Build",       desc: "End-to-end funnel design, copy, and automation. Landing page → CRM → follow-up → close.",                   note: null,                              tag: "Most Popular", tagColor: "bg-primary/20 text-primary border-primary/30",       accentClass: "text-primary",   borderClass: "border-primary/20",   bgClass: "bg-primary/5"   },
+  { icon: "campaign",   title: "Facebook & Instagram Ads", desc: "Strategy, creative, targeting, and full campaign management. We handle everything — you collect the leads.", note: "Management: ₹20,000 + 20% of ad budget", tag: "High ROI", tagColor: "bg-secondary/20 text-secondary border-secondary/30", accentClass: "text-secondary", borderClass: "border-secondary/20", bgClass: "bg-secondary/5" },
+  { icon: "ads_click",  title: "Google Ads Management",    desc: "Search, Display, and Performance Max campaigns managed and optimised for your specific goals.",               note: "Management: ₹30,000 + 20% of ad budget", tag: null,       tagColor: "",                                                    accentClass: "text-secondary", borderClass: "border-secondary/20", bgClass: "bg-secondary/5" },
+  { icon: "web",        title: "Website Development",      desc: "Custom, interactive websites and landing pages built to convert visitors into leads and clients.",            note: null,                              tag: "New",          tagColor: "bg-white/10 text-white border-white/20",              accentClass: "text-primary",   borderClass: "border-primary/20",   bgClass: "bg-primary/5"   },
 ];
 
 const faqs = [
@@ -106,114 +106,47 @@ function useNavigationGuard() {
   }, []);
 }
 
-// ── Form with validation & success state ──────────────────────────────────
+// ── Iframe form wrapper ───────────────────────────────────────────────────
 function RegistrationForm({ timeLeft }) {
-  const [submitted, setSubmitted] = useState(false);
-  const [form, setForm]   = useState({ name: "", email: "", phone: "", business: "", interests: [] });
-  const [errors, setErrors] = useState({});
-
-  const toggleInterest = (val) =>
-    setForm((f) => ({
-      ...f,
-      interests: f.interests.includes(val) ? f.interests.filter((i) => i !== val) : [...f.interests, val],
-    }));
-
-  const validate = () => {
-    const e = {};
-    if (!form.name.trim())  e.name  = "Name is required";
-    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = "Valid email required";
-    if (!form.phone.trim()) e.phone = "WhatsApp number required";
-    return e;
-  };
-
-  const handleSubmit = () => {
-    const e = validate();
-    if (Object.keys(e).length) { setErrors(e); return; }
-    setErrors({});
-    setSubmitted(true);
-    gsap.fromTo(".success-card", { scale: 0.92, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.5)" });
-  };
-
-  const inputCls = (f) =>
-    `w-full bg-white/[0.03] border rounded-sm px-5 py-4 font-body text-sm text-white placeholder:text-text-dim focus:outline-none transition-all duration-300 ${
-      errors[f] ? "border-red-500/60 focus:border-red-500" : "border-white/10 focus:border-primary/50 focus:bg-primary/5"
-    }`;
-
-  if (submitted) {
-    return (
-      <div className="success-card glass-panel rounded-xl p-10 md:p-14 flex flex-col items-center text-center">
-        <div className="w-20 h-20 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mb-8">
-          <span className="material-symbols-outlined text-primary text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
-        </div>
-        <p className="font-mono text-primary tracking-widest uppercase text-xs flex items-center gap-3 mb-5">
-          <span className="w-6 h-[1px] bg-primary"></span> You're registered <span className="w-6 h-[1px] bg-primary"></span>
-        </p>
-        <h2 className="text-3xl md:text-5xl font-headline font-medium tracking-tighter text-white mb-5 leading-[0.9]">SEE YOU SUNDAY.</h2>
-        <p className="font-body text-text-muted font-light max-w-md leading-relaxed mb-8">
-          We've received your registration, <span className="text-white font-medium">{form.name}</span>. The session link will be sent to your WhatsApp and email before every Sunday session.
-        </p>
-        <div className="glass-panel border border-white/5 rounded-xl px-8 py-5 flex items-center gap-4">
-          <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-          <span className="font-mono text-[10px] text-secondary uppercase tracking-widest">
-            Next session: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m away
-          </span>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="glass-panel rounded-xl p-8 md:p-10">
-      <h3 className="font-headline text-xl font-medium text-white mb-2">Register for Free</h3>
-      <p className="font-body text-sm text-text-muted mb-8">Fill in your details and we'll send the link to your WhatsApp & email before every session.</p>
+    <div className="flex flex-col gap-4">
 
-      <div className="space-y-5">
-        <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-text-dim block mb-3">Full Name *</label>
-          <input type="text" placeholder="Your name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputCls("name")} />
-          {errors.name  && <p className="font-mono text-[10px] text-red-400 mt-1">{errors.name}</p>}
+      {/* Top meta row */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+          <span className="font-mono text-[10px] text-secondary uppercase tracking-widest">Limited Seats Available</span>
         </div>
-        <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-text-dim block mb-3">Email Address *</label>
-          <input type="email" placeholder="your@email.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputCls("email")} />
-          {errors.email && <p className="font-mono text-[10px] text-red-400 mt-1">{errors.email}</p>}
-        </div>
-        <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-text-dim block mb-3">WhatsApp Number *</label>
-          <input type="tel" placeholder="+91 00000 00000" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputCls("phone")} />
-          {errors.phone && <p className="font-mono text-[10px] text-red-400 mt-1">{errors.phone}</p>}
-        </div>
-        <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-text-dim block mb-3">Business Type <span className="text-text-dim">(optional)</span></label>
-          <input type="text" placeholder="e.g. Real estate, coaching, e-commerce..." value={form.business} onChange={(e) => setForm({ ...form, business: e.target.value })} className={inputCls("business")} />
-        </div>
-        <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-text-dim block mb-3">I'm interested in</label>
-          <div className="grid grid-cols-2 gap-3">
-            {["Funnels", "Facebook Ads", "Google Ads", "Website Build"].map((opt) => {
-              const checked = form.interests.includes(opt);
-              return (
-                <label key={opt} className="flex items-center gap-3 cursor-pointer group">
-                  <div onClick={() => toggleInterest(opt)} className={`w-4 h-4 border rounded-sm flex items-center justify-center flex-shrink-0 transition-all ${checked ? "border-primary bg-primary/20" : "border-white/20 group-hover:border-white/40"}`}>
-                    {checked && <span className="material-symbols-outlined text-[12px] text-primary">check</span>}
-                  </div>
-                  <span className="font-body text-xs text-text-muted group-hover:text-white transition-colors">{opt}</span>
-                </label>
-              );
-            })}
-          </div>
-        </div>
+        <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest">Every Sunday · 4:00 PM IST</span>
       </div>
 
-      <button onClick={handleSubmit} className="btn-magnetic mt-8 w-full relative font-mono text-sm uppercase tracking-widest text-background font-bold px-12 py-5 group overflow-hidden bg-white hover:bg-transparent transition-colors duration-500 rounded-sm">
-        <span className="relative z-10 group-hover:text-primary transition-colors duration-300 flex items-center justify-center gap-3">
-          Reserve My Free Seat
-          <span className="material-symbols-outlined text-sm">arrow_forward</span>
-        </span>
-        <div className="absolute inset-0 border border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        <div className="absolute inset-0 bg-primary/5 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
-      </button>
-      <p className="font-mono text-[9px] text-text-dim text-center mt-5 uppercase tracking-widest">No spam. Unsubscribe anytime. 100% free.</p>
+      {/* White form card — intentional contrast */}
+      <div
+        className="rounded-2xl overflow-hidden"
+        style={{
+          boxShadow: "0 0 0 1px rgba(138,43,226,0.25), 0 0 60px rgba(138,43,226,0.08), 0 32px 64px rgba(0,0,0,0.5)",
+        }}
+      >
+        {/* Coloured top accent bar */}
+        <div style={{ height: "4px", background: "linear-gradient(90deg, #00F5FF 0%, #8A2BE2 100%)" }} />
+
+        {/* Iframe */}
+        <iframe
+          src="https://login.arkquen.com/widget/form/6a01c487d1cef"
+          style={{ width: "100%", height: "620px", border: "none", display: "block" }}
+          id="inline-6a01c487d1cef"
+          data-form-name="ShapeOdyssey Webinar Form"
+          data-layout-iframe-id="inline-6a01c487d1cef"
+          data-form-id="6a01c487d1cef"
+          data-height="620"
+          title="ShapeOdyssey Webinar Form"
+        />
+      </div>
+
+      {/* Trust line */}
+      <p className="font-mono text-[9px] text-text-dim text-center uppercase tracking-widest">
+        🔒 &nbsp;No spam · Unsubscribe anytime · 100% free
+      </p>
     </div>
   );
 }
@@ -268,7 +201,7 @@ export default function WebinarRegistration() {
       <nav className="fixed top-0 w-full z-50 border-b border-white/[0.04]" style={{ backdropFilter: "blur(20px)", background: "rgba(5,5,5,0.75)" }}>
         <div className="max-w-[1400px] mx-auto px-8 md:px-16 h-20 flex items-center justify-between">
           <img
-            src={new URL("../assets/logo.png", import.meta.url).href}
+            src="/assets/logo.png"
             alt="ShapeOdyssey"
             className="h-10 md:h-12"
             onError={(e) => {
@@ -429,14 +362,21 @@ export default function WebinarRegistration() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {services.map((s, i) => (
-                <div key={i} className={`glass-panel glow-card rounded-xl p-8 md:p-10 flex gap-6 service-card hover-lift relative overflow-hidden border ${s.borderClass}`}>
-                  {s.tag && <div className={`absolute top-5 right-5 px-3 py-1 rounded-full border text-[9px] font-mono uppercase tracking-widest ${s.tagColor}`}>{s.tag}</div>}
-                  <div className={`flex-shrink-0 w-14 h-14 rounded-xl border ${s.borderClass} ${s.bgClass} flex items-center justify-center`}>
-                    <span className={`material-symbols-outlined ${s.accentClass} text-2xl`}>{s.icon}</span>
-                  </div>
-                  <div>
-                    <h3 className="font-headline text-xl font-medium text-white mb-3">{s.title}</h3>
-                    <p className="font-body text-sm text-text-muted font-light leading-relaxed">{s.desc}</p>
+                <div key={i} className={`glass-panel glow-card rounded-xl p-8 md:p-10 flex flex-col gap-5 service-card hover-lift relative border ${s.borderClass}`}>
+                  {s.tag && (
+                    <div className="flex">
+                      <span className={`px-3 py-1 rounded text-[9px] font-mono uppercase tracking-widest border ${s.tagColor}`}>{s.tag}</span>
+                    </div>
+                  )}
+                  <div className="flex gap-5 items-start">
+                    <div className={`flex-shrink-0 w-14 h-14 rounded-xl border ${s.borderClass} ${s.bgClass} flex items-center justify-center`}>
+                      <span className={`material-symbols-outlined ${s.accentClass} text-2xl`}>{s.icon}</span>
+                    </div>
+                    <div>
+                      <h3 className="font-headline text-xl font-medium text-white mb-2">{s.title}</h3>
+                      <p className="font-body text-sm text-text-muted font-light leading-relaxed">{s.desc}</p>
+                      {s.note && <p className="font-mono text-[10px] text-text-dim uppercase tracking-widest mt-2">{s.note}</p>}
+                    </div>
                   </div>
                 </div>
               ))}

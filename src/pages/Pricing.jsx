@@ -205,26 +205,40 @@ const categories = [
 
 // ── SINGLE PLAN (wide horizontal layout) ─────────────────────────────────
 function SinglePlanLayout({ plan, active }) {
+  const includedCount = plan.features.filter(f => f.included).length;
   return (
     <div className="anim-card glow-card glass-panel-accent rounded-2xl border border-primary/20 overflow-hidden mb-8"
       style={{ borderTopColor: active.accentClass === "text-secondary" ? "rgba(138,43,226,0.6)" : "rgba(0,245,255,0.6)", borderTopWidth: "2px" }}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {/* Left — plan details */}
-        <div className="p-10 md:p-14 flex flex-col border-b lg:border-b-0 lg:border-r border-white/5">
-          <p className={`font-mono text-[10px] uppercase tracking-widest mb-3 ${plan.tagColor}`}>{plan.tag}</p>
-          <h2 className="font-headline text-3xl md:text-4xl font-medium text-white mb-2">{plan.name}</h2>
+        <div className="p-10 md:p-14 flex flex-col gap-6 border-b lg:border-b-0 lg:border-r border-white/5">
+          <div>
+            <p className={`font-mono text-[10px] uppercase tracking-widest mb-3 ${plan.tagColor}`}>{plan.tag}</p>
+            <h2 className="font-headline text-3xl md:text-4xl font-medium text-white">{plan.name}</h2>
+          </div>
 
           {/* Price */}
-          <div className="flex items-baseline gap-3 mt-6 mb-2">
-            <span className={`font-headline text-5xl md:text-6xl font-medium tracking-tight ${active.accentClass}`}>{plan.price}</span>
+          <div>
+            <div className={`font-headline text-5xl md:text-6xl font-medium tracking-tight leading-none ${active.accentClass}`}>{plan.price}</div>
+            <div className="font-mono text-[10px] text-text-dim uppercase tracking-widest mt-2">{plan.period}</div>
           </div>
-          <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest mb-10">{plan.period}</span>
+
+          {/* What's inside summary */}
+          <div className="flex items-center gap-3 glass-panel border border-white/5 rounded-xl px-5 py-4">
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${active.bgClass} border ${active.borderClass} flex-shrink-0`}>
+              <span className={`material-symbols-outlined text-sm ${active.accentClass}`}>checklist</span>
+            </div>
+            <div>
+              <div className="font-mono text-xs text-white font-medium">{includedCount} deliverables included</div>
+              <div className="font-mono text-[9px] text-text-dim uppercase tracking-widest">See full list →</div>
+            </div>
+          </div>
 
           {/* CTA */}
           <Link
             to="/webinar"
-            className={`btn-magnetic relative font-mono text-sm uppercase tracking-widest font-bold px-10 py-5 group overflow-hidden bg-white hover:bg-transparent transition-colors duration-500 rounded-sm text-center mt-auto`}
+            className={`btn-magnetic relative font-mono text-sm uppercase tracking-widest font-bold px-10 py-5 group overflow-hidden bg-white hover:bg-transparent transition-colors duration-500 rounded-sm text-center text-background`}
           >
             <span className="relative z-10 group-hover:text-primary transition-colors duration-300 flex items-center justify-center gap-3">
               Get Started
@@ -233,6 +247,10 @@ function SinglePlanLayout({ plan, active }) {
             <div className={`absolute inset-0 border ${active.borderClass} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
             <div className="absolute inset-0 bg-primary/5 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
           </Link>
+
+          <p className="font-mono text-[9px] text-text-dim uppercase tracking-widest text-center">
+            One-time payment · No recurring fees
+          </p>
         </div>
 
         {/* Right — features grid */}

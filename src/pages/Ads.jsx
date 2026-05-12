@@ -108,45 +108,75 @@ export default function Ads() {
         <div className="ambient-orb w-[500px] h-[500px] bg-secondary/8 top-[10%] right-[-5%] mix-blend-screen"></div>
 
         <div className="max-w-[1400px] mx-auto px-8 md:px-16 relative z-10">
-          <div className="max-w-4xl">
-            <div className="clip-text-container mb-8">
-              <p className="font-mono text-primary tracking-widest uppercase text-xs flex items-center gap-4 ads-hero-anim">
-                <span className="w-12 h-[1px] bg-primary"></span>
-                Paid Advertising Services
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+
+            {/* LEFT — text */}
+            <div className="flex-1">
+              <div className="mb-8">
+                <p className="font-mono text-primary tracking-widest uppercase text-xs flex items-center gap-4 ads-hero-anim">
+                  <span className="w-12 h-[1px] bg-primary"></span>
+                  Paid Advertising Services
+                </p>
+              </div>
+              <div className="mb-8">
+                <h1 className="text-[2.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-headline font-medium tracking-tighter leading-[0.92] text-white ads-hero-anim">
+                  ADS THAT<br />
+                  <span className="animate-gradient-text italic font-light">ACTUALLY</span><br />
+                  <span className="animate-gradient-text italic font-light">CONVERT.</span>
+                </h1>
+              </div>
+              <p className="text-base md:text-lg font-body text-text-muted font-light max-w-lg leading-relaxed mb-10 ads-hero-anim">
+                Facebook, Instagram, and Google Ads managed end-to-end. We handle strategy, creative, targeting, and optimisation — you handle the leads coming in.
               </p>
+              <div className="flex flex-wrap gap-4 ads-hero-anim">
+                <Link
+                  to="/webinar"
+                  className="btn-magnetic relative font-mono text-sm uppercase tracking-widest text-background font-bold px-10 py-4 group overflow-hidden bg-white hover:bg-transparent transition-colors duration-500 rounded-sm"
+                >
+                  <span className="relative z-10 group-hover:text-primary transition-colors duration-300 flex items-center gap-3">
+                    Book Free Strategy Call
+                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
+                  <div className="absolute inset-0 border border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-primary/5 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
+                </Link>
+                <a
+                  href="#facebook"
+                  className="btn-magnetic relative font-mono text-sm uppercase tracking-widest text-white px-10 py-4 group overflow-hidden border border-white/10 hover:border-white/30 transition-colors duration-500 rounded-sm"
+                >
+                  <span className="relative z-10">See Our Services</span>
+                </a>
+              </div>
             </div>
-            <div className="clip-text-container">
-              <h1 className="text-[2.5rem] md:text-[5.5rem] lg:text-[8rem] font-headline font-medium tracking-tighter leading-[0.85] text-white ads-hero-anim">
-                ADS THAT
-              </h1>
+
+            {/* RIGHT — stats visual */}
+            <div className="flex-shrink-0 w-full lg:w-[480px] ads-hero-anim">
+              <div className="grid grid-cols-2 gap-4">
+                {/* Stat cards */}
+                {[
+                  { value: "3.2×", label: "Avg. ROAS", sub: "Facebook campaigns",       color: "text-primary",   border: "border-primary/25",   bg: "bg-primary/5"   },
+                  { value: "₹38",  label: "Avg. CPL",  sub: "Cost per lead (India)",    color: "text-primary",   border: "border-primary/25",   bg: "bg-primary/5"   },
+                  { value: "67%",  label: "Lower CPC", sub: "vs industry benchmark",    color: "text-secondary", border: "border-secondary/25", bg: "bg-secondary/5" },
+                  { value: "14d",  label: "To Results", sub: "From campaign launch",    color: "text-secondary", border: "border-secondary/25", bg: "bg-secondary/5" },
+                ].map((s, i) => (
+                  <div key={i} className={`glass-panel rounded-2xl p-6 border ${s.border} flex flex-col gap-3`}>
+                    <div className={`font-headline text-4xl font-medium tracking-tight ${s.color}`}>{s.value}</div>
+                    <div>
+                      <div className="font-mono text-xs text-white uppercase tracking-widest">{s.label}</div>
+                      <div className="font-mono text-[9px] text-text-dim uppercase tracking-widest mt-0.5">{s.sub}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Platform badges */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                {["Facebook", "Instagram", "Google Search", "YouTube", "Display"].map((p) => (
+                  <span key={p} className="font-mono text-[9px] uppercase tracking-widest text-text-dim border border-white/8 px-3 py-1.5 rounded-full bg-white/[0.02]">{p}</span>
+                ))}
+              </div>
             </div>
-            <div className="clip-text-container mb-10">
-              <h1 className="text-[2.5rem] md:text-[5.5rem] lg:text-[8rem] font-headline font-medium tracking-tighter leading-[0.85] ads-hero-anim">
-                <span className="animate-gradient-text italic font-light">ACTUALLY CONVERT.</span>
-              </h1>
-            </div>
-            <p className="text-base md:text-xl font-body text-text-muted font-light max-w-2xl leading-relaxed mb-12 ads-hero-anim">
-              Facebook, Instagram, and Google Ads managed end-to-end. We handle strategy, creative, targeting, and optimisation — you handle the leads coming in.
-            </p>
-            <div className="flex flex-wrap gap-4 ads-hero-anim">
-              <Link
-                to="/webinar"
-                className="btn-magnetic relative font-mono text-sm uppercase tracking-widest text-background font-bold px-10 py-4 group overflow-hidden bg-white hover:bg-transparent transition-colors duration-500 rounded-sm"
-              >
-                <span className="relative z-10 group-hover:text-primary transition-colors duration-300 flex items-center gap-3">
-                  Book Free Strategy Call
-                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </span>
-                <div className="absolute inset-0 border border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="absolute inset-0 bg-primary/5 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
-              </Link>
-              <a
-                href="#facebook"
-                className="btn-magnetic relative font-mono text-sm uppercase tracking-widest text-white px-10 py-4 group overflow-hidden border border-white/10 hover:border-white/30 transition-colors duration-500 rounded-sm"
-              >
-                <span className="relative z-10">See Our Services</span>
-              </a>
-            </div>
+
           </div>
         </div>
       </section>

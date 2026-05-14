@@ -102,7 +102,7 @@ export default function Ads() {
     <main className="flex-grow relative z-10 pt-28 pb-0 min-h-screen">
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
+      <section className="relative py-20 md:py-32 overflow-visible">
         <div className="absolute inset-0 bg-grid z-0"></div>
         <div className="ambient-orb w-[700px] h-[700px] bg-primary/10 top-[-15%] left-[-10%] mix-blend-screen"></div>
         <div className="ambient-orb w-[500px] h-[500px] bg-secondary/8 top-[10%] right-[-5%] mix-blend-screen"></div>
@@ -119,10 +119,10 @@ export default function Ads() {
                 </p>
               </div>
               <div className="mb-8">
-                <h1 className="text-[2.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-headline font-medium tracking-tighter leading-[0.92] text-white ads-hero-anim">
+                <h1 className="text-[2.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-headline font-medium tracking-tight leading-[0.92] text-white ads-hero-anim overflow-visible">
                   ADS THAT<br />
-                  <span className="animate-gradient-text italic font-light">ACTUALLY</span><br />
-                  <span className="animate-gradient-text italic font-light">CONVERT.</span>
+                  <span className="animate-gradient-text italic font-light pr-4 inline-block">ACTUALLY</span><br />
+                  <span className="animate-gradient-text italic font-light pr-4 inline-block">CONVERT</span>
                 </h1>
               </div>
               <p className="text-base md:text-lg font-body text-text-muted font-light max-w-lg leading-relaxed mb-10 ads-hero-anim">

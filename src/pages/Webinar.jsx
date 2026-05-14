@@ -162,7 +162,7 @@ export default function Webinar() {
     <main className="flex-grow relative z-10 pt-28 pb-0 min-h-screen" ref={heroRef}>
 
       {/* ── HERO ────────────────────────────────────────────────────── */}
-      <section className="relative py-20 md:py-28 overflow-hidden">
+      <section className="relative py-20 md:py-32 overflow-visible">
         <div className="absolute inset-0 bg-grid z-0"></div>
         <div className="ambient-orb w-[800px] h-[700px] bg-secondary/10 top-[-10%] left-1/2 -translate-x-1/2 mix-blend-screen"></div>
         <div className="ambient-orb w-[400px] h-[400px] bg-primary/8 bottom-0 right-0 mix-blend-screen translate-x-1/3"></div>

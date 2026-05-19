@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VORTEX — Digital Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:#04040a;
+  overflow-x:hidden;
+  color:#fff;
+  cursor:none;
+}
+#cursor{
+  position:fixed;width:8px;height:8px;
+  background:#fff;border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s;
+  mix-blend-mode:exclusion;
+}
+#cursor-ring{
+  position:fixed;width:32px;height:32px;
+  border:1px solid rgba(255,255,255,0.4);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:all 0.25s ease;
+  mix-blend-mode:exclusion;
+}
+
+/* ---- INTRO ---- */
+#intro{
+  position:fixed;top:0;left:0;width:100%;height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:500;background:#04040a;
+  transition:opacity 1.4s cubic-bezier(0.4,0,0.2,1),transform 1.6s cubic-bezier(0.4,0,0.2,1);
+}
+#intro.out{opacity:0;transform:translateY(-30px);pointer-events:none}
+.logo-word{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(72px,14vw,160px);
+  letter-spacing:0.18em;
+  color:#fff;
+  line-height:1;
+  margin-bottom:8px;
+}
+.logo-sub{
+  font-family:'DM Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.35em;
+  color:rgba(255,255,255,0.3);
+  text-transform:uppercase;
+  margin-bottom:56px;
+}
+.scroll-hint{
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.scroll-text{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:0.3em;
+  color:rgba(255,255,255,0.25);text-transform:uppercase;
+}
+.scroll-arrow{
+  width:1px;height:48px;
+  background:linear-gradient(to bottom,rgba(255,255,255,0.4),transparent);
+  animation:arrowPulse 2s ease-in-out infinite;
+}
+@keyframes arrowPulse{
+  0%,100%{transform:scaleY(1);opacity:0.4}
+  50%{transform:scaleY(0.6);opacity:0.9}
+}
+
+/* ---- CANVAS ---- */
+#spiral-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100vh;
+  z-index:1;pointer-events:none;
+}
+
+/* ---- CHAT BUBBLES ---- */
+#chat-wrap{
+  position:fixed;top:0;left:0;width:100%;height:100vh;
+  z-index:20;pointer-events:none;
+  display:flex;align-items:center;justify-content:flex-end;
+  padding:0 64px;
+}
+.chat-msg{
+  position:absolute;
+  right:64px;
+  top:50%;
+  transform:translateY(-50%) translateX(60px);
+  opacity:0;
+  filter:blur(20px);
+  transition:all 0.85s cubic-bezier(0.16,1,0.3,1);
+  max-width:420px;
+  width:100%;
+}
+.chat-msg.show{
+  opacity:1;
+  transform:translateY(-50%) translateX(0);
+  filter:blur(0);
+}
+.chat-msg.gone{
+  opacity:0;
+  transform:translateY(calc(-50% - 40px)) translateX(-40px);
+  filter:blur(20px);
+}
+.chat-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,#1a1a2e,#16213e);
+  border:1px solid rgba(255,255,255,0.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+  box-shadow:0 0 0 4px rgba(255,255,255,0.03);
+  margin-bottom:8px;
+}
+.chat-inner{display:flex;flex-direction:column;align-items:flex-end;}
+.bubble{
+  background:rgba(10,10,20,0.92);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:20px 20px 4px 20px;
+  padding:18px 22px;
+  backdrop-filter:blur(40px);
+  -webkit-backdrop-filter:blur(40px);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.02) inset,
+    0 24px 64px rgba(0,0,0,0.6);
+}
+.bubble-tag{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:0.3em;
+  color:rgba(255,255,255,0.2);text-transform:uppercase;
+  margin-bottom:8px;
+}
+.bubble-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px;letter-spacing:0.06em;
+  color:#fff;line-height:1;
+  margin-bottom:10px;
+}
+.bubble-text{
+  font-size:13px;line-height:1.65;
+  color:rgba(255,255,255,0.55);
+  font-weight:300;
+}
+.bubble-foot{
+  display:flex;justify-content:flex-end;
+  margin-top:12px;gap:4px;
+  align-items:center;
+}
+.bubble-dot{
+  width:4px;height:4px;border-radius:50%;
+  background:#3dffa0;
+  box-shadow:0 0 8px #3dffa0;
+}
+.bubble-time{
+  font-family:'DM Mono',monospace;
+  font-size:9px;color:rgba(255,255,255,0.2);
+  letter-spacing:0.1em;
+}
+
+/* ---- TYPING ---- */
+#typing{
+  position:fixed;bottom:80px;right:64px;z-index:20;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.6s;
+}
+#typing.show{opacity:1}
+.typing-wrap{
+  background:rgba(10,10,20,0.92);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:20px 20px 4px 20px;
+  padding:14px 20px;
+  display:flex;gap:5px;align-items:center;
+}
+.tdot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  animation:tdot 1.4s ease-in-out infinite;
+}
+.tdot:nth-child(2){animation-delay:0.2s}
+.tdot:nth-child(3){animation-delay:0.4s}
+@keyframes tdot{
+  0%,60%,100%{transform:translateY(0)}
+  30%{transform:translateY(-5px)}
+}
+
+/* ---- SCROLL HINT (in spiral) ---- */
+#hint{
+  position:fixed;bottom:36px;left:50%;
+  transform:translateX(-50%);
+  z-index:100;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:1;transition:opacity 0.5s;
+}
+#hint.out{opacity:0;pointer-events:none}
+.hint-text{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:0.3em;
+  color:rgba(255,255,255,0.2);text-transform:uppercase;
+}
+.hint-line{
+  width:1px;height:32px;
+  background:linear-gradient(to bottom,rgba(255,255,255,0.25),transparent);
+  animation:arrowPulse 1.8s ease-in-out infinite;
+}
+
+/* ---- TRANSITION ---- */
+#transition{
+  position:fixed;top:0;left:0;width:100%;height:100vh;
+  background:#fff;z-index:1000;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.6s ease;
+}
+#transition.active{opacity:1;pointer-events:all}
+.ripple-el{
+  position:absolute;border-radius:50%;
+  background:rgba(0,0,0,0.04);
+  transform:scale(0);
+  animation:rippleOut 1.6s ease-out forwards;
+}
+@keyframes rippleOut{
+  to{transform:scale(6);opacity:0}
+}
+
+/* ---- MAIN SITE ---- */
+#main{
+  position:fixed;top:0;left:0;width:100%;height:100vh;
+  background:#f5f3ee;z-index:2000;
+  opacity:0;pointer-events:none;
+  transform:translateY(20px);
+  transition:all 1s cubic-bezier(0.16,1,0.3,1);
+  overflow-y:auto;
+}
+#main.active{opacity:1;pointer-events:all;transform:translateY(0)}
+
+.main-nav{
+  position:sticky;top:0;z-index:10;
+  background:rgba(245,243,238,0.9);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  padding:20px 60px;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.main-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:24px;letter-spacing:0.15em;color:#04040a;
+}
+.nav-links{display:flex;gap:36px}
+.nav-links a{
+  font-family:'DM Mono',monospace;
+  font-size:11px;letter-spacing:0.2em;color:#04040a;
+  opacity:0.4;text-decoration:none;text-transform:uppercase;
+  transition:opacity 0.2s;
+}
+.nav-links a:hover{opacity:0.8}
+.nav-cta{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:0.15em;padding:10px 24px;
+  background:#04040a;color:#fff;border:none;
+  border-radius:2px;cursor:pointer;text-transform:uppercase;
+  transition:opacity 0.2s;
+}
+.nav-cta:hover{opacity:0.7}
+
+.hero{
+  padding:100px 60px 80px;
+  max-width:1200px;
+}
+.hero-kicker{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:0.4em;
+  color:rgba(4,4,10,0.3);text-transform:uppercase;
+  margin-bottom:24px;
+}
+.hero-h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(72px,9vw,120px);
+  letter-spacing:0.05em;
+  color:#04040a;line-height:0.92;
+  margin-bottom:32px;
+}
+.hero-h1 em{color:transparent;-webkit-text-stroke:2px #04040a;font-style:normal}
+.hero-p{
+  font-size:16px;line-height:1.7;
+  color:rgba(4,4,10,0.45);
+  max-width:500px;font-weight:300;
+  margin-bottom:48px;
+}
+.hero-btns{display:flex;gap:16px;align-items:center}
+.btn-primary{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:0.2em;padding:14px 36px;
+  background:#04040a;color:#fff;border:none;
+  border-radius:2px;cursor:pointer;text-transform:uppercase;
+}
+.btn-ghost{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:0.2em;padding:14px 36px;
+  background:transparent;color:#04040a;
+  border:1px solid rgba(4,4,10,0.15);
+  border-radius:2px;cursor:pointer;text-transform:uppercase;
+}
+
+.services{
+  padding:80px 60px;
+  background:#04040a;
+}
+.sec-head{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:48px;letter-spacing:0.1em;color:#fff;
+  margin-bottom:48px;
+}
+.svc-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.05);
+}
+.svc-card{
+  padding:36px;background:#04040a;
+  transition:background 0.3s;
+}
+.svc-card:hover{background:#0c0c1a}
+.svc-num{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:0.2em;
+  color:rgba(255,255,255,0.15);
+  margin-bottom:20px;
+}
+.svc-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:26px;letter-spacing:0.05em;
+  color:#fff;margin-bottom:12px;
+}
+.svc-text{
+  font-size:13px;line-height:1.65;
+  color:rgba(255,255,255,0.35);font-weight:300;
+}
+
+.cta-strip{
+  padding:100px 60px;background:#f5f3ee;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:40px;
+}
+.cta-strip h2{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(48px,6vw,80px);
+  letter-spacing:0.05em;color:#04040a;
+  line-height:0.95;
+}
+.cta-strip h2 em{color:transparent;-webkit-text-stroke:2px #04040a;font-style:normal}
+.cta-big{
+  font-family:'DM Mono',monospace;font-size:12px;
+  letter-spacing:0.2em;padding:18px 48px;
+  background:#04040a;color:#fff;border:none;
+  border-radius:2px;cursor:pointer;text-transform:uppercase;
+  flex-shrink:0;
+}
+
+.main-footer{
+  padding:32px 60px;
+  border-top:1px solid rgba(4,4,10,0.08);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:18px;letter-spacing:0.15em;color:#04040a;opacity:0.3;
+}
+.footer-copy{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:0.15em;color:rgba(4,4,10,0.25);text-transform:uppercase;
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="logo-word">VORTEX</div>
+  <div class="logo-sub">Digital Agency · Since 2019</div>
+  <div class="scroll-hint">
+    <div class="scroll-text">Scroll to enter</div>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<!-- CANVAS -->
+<canvas id="spiral-canvas"></canvas>
+
+<!-- CHAT MESSAGES -->
+<div id="chat-wrap">
+  <!-- injected by JS -->
+</div>
+
+<!-- TYPING INDICATOR -->
+<div id="typing">
+  <div class="typing-wrap">
+    <div class="tdot"></div>
+    <div class="tdot"></div>
+    <div class="tdot"></div>
+  </div>
+</div>
+
+<!-- SPIRAL SCROLL HINT -->
+<div id="hint">
+  <div class="hint-text">Keep scrolling</div>
+  <div class="hint-line"></div>
+</div>
+
+<!-- TRANSITION -->
+<div id="transition"></div>
+
+<!-- MAIN SITE -->
+<div id="main">
+  <nav class="main-nav">
+    <div class="main-logo">VORTEX</div>
+    <div class="nav-links">
+      <a href="#">Work</a>
+      <a href="#">Services</a>
+      <a href="#">About</a>
+    </div>
+    <button class="nav-cta">Start a project →</button>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-kicker">We build what others can't imagine</div>
+    <h1 class="hero-h1">Shape<br>The <em>Web</em></h1>
+    <p class="hero-p">VORTEX is a full-spectrum digital agency. Automation, advertising, and web development — engineered for brands that refuse to be ordinary.</p>
+    <div class="hero-btns">
+      <button class="btn-primary">See our work</button>
+      <button class="btn-ghost">How we work</button>
+    </div>
+  </div>
+
+  <section class="services">
+    <div class="sec-head">What we do</div>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="svc-num">01</div>
+        <div class="svc-title">Business Automation</div>
+        <div class="svc-text">Custom bots, API integrations, and intelligent workflows that eliminate manual work and scale with your business.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">02</div>
+        <div class="svc-title">Digital Advertising</div>
+        <div class="svc-text">Precision-targeted campaigns across Meta, Google, TikTok, and emerging platforms. Every dollar optimized.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">03</div>
+        <div class="svc-title">Web Development</div>
+        <div class="svc-text">High-performance websites and full-stack platforms. Fast, responsive, SEO-optimized, and built to convert.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">04</div>
+        <div class="svc-title">Analytics & Data</div>
+        <div class="svc-text">Custom dashboards, tracking setups, and reporting that turns raw data into competitive advantage.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">05</div>
+        <div class="svc-title">Brand Identity</div>
+        <div class="svc-text">Visual identities with a point of view. Logos, systems, and creative direction that sets you apart.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-num">06</div>
+        <div class="svc-title">Growth Strategy</div>
+        <div class="svc-text">End-to-end growth roadmaps. We find leverage points, run experiments, and scale what works.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-strip">
+    <h2>Ready to<br>build <em>something</em><br>real?</h2>
+    <button class="cta-big">Get in touch →</button>
+  </div>
+
+  <footer class="main-footer">
+    <div class="footer-logo">VORTEX</div>
+    <div class="footer-copy">© 2026 Vortex Agency · All rights reserved</div>
+  </footer>
+</div>
+
+<script>
+// ==================== CURSOR ====================
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+});
+(function ringLoop(){
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(ringLoop);
+})();
+
+// ==================== NODE DATA ====================
+const nodes=[
+  {icon:'🤖',tag:'01 / Automation',title:'WORKFLOW AUTOMATION',text:'Eliminate repetitive work forever. We build custom bots, connect your tools via API, and design intelligent workflows that run 24/7 without supervision.'},
+  {icon:'📢',tag:'02 / Advertising',title:'PRECISION AD CAMPAIGNS',text:'Data-driven campaigns across every major platform. Creative that stops thumbs, targeting that finds buyers, and optimization that never sleeps.'},
+  {icon:'🌐',tag:'03 / Web Dev',title:'WEB DEVELOPMENT',text:'Websites that load in under a second, rank on page one, and convert visitors into customers. Built with modern tech, deployed to global infrastructure.'},
+  {icon:'📊',tag:'04 / Analytics',title:'DATA & ANALYTICS',text:'Turn your raw data into a competitive weapon. Custom dashboards, event tracking, attribution modeling — insights that drive real decisions.'},
+  {icon:'🎨',tag:'05 / Brand',title:'BRAND IDENTITY',text:'Visual identities that make people stop and stare. Logo systems, color theory, typography, and brand guidelines built for longevity.'},
+  {icon:'⚡',tag:'06 / Optimization',title:'PERFORMANCE & SEO',text:'Speed audits, Core Web Vitals, technical SEO, and security hardening. We make sure your digital foundation never becomes a liability.'},
+  {icon:'🚀',tag:'07 / Strategy',title:'GROWTH STRATEGY',text:'Full-funnel growth roadmaps built for your market. We identify leverage, test hypotheses fast, and double down on what actually works.'},
+  {icon:'💬',tag:'08 / Contact',title:'LETS BUILD TOGETHER',text:'Ready to transform your digital presence? Scroll through and meet us on the other side. Your next chapter starts here.'}
+];
+const N=nodes.length;
+
+// ==================== CANVAS ====================
+const canvas=document.getElementById('spiral-canvas');
+const ctx=canvas.getContext('2d');
+let W,H;
+function resize(){
+  W=window.innerWidth;H=window.innerHeight;
+  canvas.width=W*devicePixelRatio;
+  canvas.height=H*devicePixelRatio;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  ctx.scale(devicePixelRatio,devicePixelRatio);
+}
+resize();
+window.addEventListener('resize',resize);
+
+// ==================== SPIRAL GEOMETRY ====================
+// Starts from rightmost screen edge, spirals inward counter-clockwise
+function spiral(t){
+  const turns=5.2;
+  const Rmax=Math.min(W,H)*0.44;
+  const Rmin=55;
+  const angle=t*turns*Math.PI*2; // 0 = right side (cos=1)
+  const r=Rmax-(Rmax-Rmin)*t;
+  return {
+    x:Math.cos(angle)*r,
+    y:Math.sin(angle)*r,
+    r,angle,t
+  };
+}
+
+function nodeT(i){return(i+0.5)/N}
+
+// ==================== CREATE MESSAGES ====================
+const chatWrap=document.getElementById('chat-wrap');
+const msgs=[];
+nodes.forEach((n,i)=>{
+  const el=document.createElement('div');
+  el.className='chat-msg';
+  el.innerHTML=`
+    <div class="chat-inner">
+      <div class="chat-avatar">${n.icon}</div>
+      <div class="bubble">
+        <div class="bubble-tag">${n.tag}</div>
+        <div class="bubble-title">${n.title}</div>
+        <div class="bubble-text">${n.text}</div>
+        <div class="bubble-foot">
+          <div class="bubble-dot"></div>
+          <div class="bubble-time">VORTEX · Now</div>
+        </div>
+      </div>
+    </div>
+  `;
+  chatWrap.appendChild(el);
+  msgs.push(el);
+});
+
+// ==================== SCROLL SETUP ====================
+const PX_PER_NODE=window.innerHeight*2.6;
+document.body.style.height=(N*PX_PER_NODE+window.innerHeight*2.5)+'px';
+
+let scrollY=0,introGone=false,transitionDone=false,hintGone=false;
+const intro=document.getElementById('intro');
+const hint=document.getElementById('hint');
+const typing=document.getElementById('typing');
+const transDiv=document.getElementById('transition');
+const mainDiv=document.getElementById('main');
+
+window.addEventListener('scroll',()=>{
+  scrollY=window.scrollY;
+  const total=document.body.scrollHeight-window.innerHeight;
+  const sp=scrollY/total;
+
+  if(scrollY>80&&!introGone){
+    intro.classList.add('out');introGone=true;
+  }
+  if(sp>0.06&&!hintGone){
+    hint.classList.add('out');hintGone=true;
+  }
+
+  updateMsgs(sp);
+
+  if(sp>0.93&&!transitionDone){startTransition();}
+},{passive:true});
+
+function updateMsgs(sp){
+  msgs.forEach((el,i)=>{
+    const t=nodeT(i);
+    const d=t-sp;
+    const near=Math.abs(d)<0.072;
+    const passed=d<-0.072;
+    if(near){el.classList.add('show');el.classList.remove('gone');}
+    else if(passed){el.classList.remove('show');el.classList.add('gone');}
+    else{el.classList.remove('show','gone');}
+  });
+  const lastT=nodeT(N-1);
+  if(sp>lastT+0.05&&sp<0.92){typing.classList.add('show');}
+  else{typing.classList.remove('show');}
+}
+
+function startTransition(){
+  transitionDone=true;
+  transDiv.classList.add('active');
+  for(let i=0;i<4;i++){
+    const r=document.createElement('div');
+    r.className='ripple-el';
+    const sz=80+i*120;
+    r.style.cssText=`width:${sz}px;height:${sz}px;top:50%;left:50%;margin:${-sz/2}px 0 0 ${-sz/2}px;animation-delay:${i*0.18}s;`;
+    transDiv.appendChild(r);
+  }
+  setTimeout(()=>{
+    mainDiv.classList.add('active');
+    document.body.style.overflow='hidden';
+    mainDiv.style.overflowY='auto';
+    canvas.style.display='none';
+    chatWrap.style.display='none';
+    hint.style.display='none';
+    typing.style.display='none';
+  },2000);
+}
+
+// ==================== DRAW ====================
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const total=document.body.scrollHeight-window.innerHeight;
+  const sp=Math.min(scrollY/total,1);
+  const cx=W/2,cy=H/2;
+  const STEPS=600;
+  const GAP=3; // wider gaps between spiral passes
+
+  // Draw line segments
+  for(let i=0;i<STEPS;i+=GAP){
+    const t1=i/STEPS;
+    const t2=(i+GAP)/STEPS;
+    const p1=spiral(t1);
+    const p2=spiral(t2);
+    const dt=t1-sp;
+
+    if(dt<-0.14)continue;
+
+    let alpha=1,blur=0,lw=5;
+
+    if(dt>0){
+      const ahead=dt/(1-sp+0.001);
+      // Progressive blur into the abyss ahead
+      alpha=Math.max(0,1-ahead*3.2);
+      blur=ahead*55;
+      lw=5*Math.max(0.15,1-ahead*1.5);
+    }else{
+      const behind=Math.abs(dt)/0.14;
+      alpha=Math.max(0,1-behind*7);
+      blur=behind*20;
+      lw=5*Math.max(0.1,1-behind);
+    }
+
+    if(alpha<0.015)continue;
+
+    ctx.save();
+    ctx.globalAlpha=alpha;
+    if(blur>0.5){
+      ctx.filter=`blur(${blur.toFixed(1)}px)`;
+    }
+    ctx.strokeStyle='rgba(255,255,255,1)';
+    ctx.lineWidth=lw;
+    ctx.lineCap='round';
+    ctx.shadowBlur=0;
+    ctx.beginPath();
+    ctx.moveTo(cx+p1.x,cy+p1.y);
+    ctx.lineTo(cx+p2.x,cy+p2.y);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Draw node dots on spiral
+  for(let i=0;i<N;i++){
+    const t=nodeT(i);
+    const p=spiral(t);
+    const dt=t-sp;
+    if(dt<-0.22)continue;
+
+    let alpha=1,blur=0,scale=1;
+    if(dt>0){
+      const ahead=dt/(1-sp+0.001);
+      alpha=Math.max(0,1-ahead*5);
+      blur=ahead*50;
+      scale=Math.max(0.1,1-ahead);
+    }else{
+      const behind=Math.abs(dt)/0.22;
+      alpha=Math.max(0,1-behind*5);
+      blur=behind*30;
+      scale=Math.max(0.1,1-behind*0.8);
+    }
+    if(alpha<0.04)continue;
+
+    const nx=cx+p.x,ny=cy+p.y;
+    const nr=16*scale;
+
+    ctx.save();
+    ctx.globalAlpha=alpha;
+    if(blur>0.5)ctx.filter=`blur(${blur.toFixed(1)}px)`;
+
+    // Outer ring pulse
+    ctx.strokeStyle='rgba(255,255,255,0.2)';
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.arc(nx,ny,nr+8,0,Math.PI*2);
+    ctx.stroke();
+
+    // White node
+    ctx.fillStyle='#fff';
+    ctx.beginPath();
+    ctx.arc(nx,ny,nr,0,Math.PI*2);
+    ctx.fill();
+
+    // Inner dark dot
+    ctx.fillStyle='#04040a';
+    ctx.beginPath();
+    ctx.arc(nx,ny,nr*0.45,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  // Center fade core
+  ctx.save();
+  const cg=ctx.createRadialGradient(cx,cy,0,cx,cy,80);
+  cg.addColorStop(0,'rgba(4,4,10,0.35)');
+  cg.addColorStop(1,'rgba(4,4,10,0)');
+  ctx.fillStyle=cg;
+  ctx.beginPath();
+  ctx.arc(cx,cy,80,0,Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>

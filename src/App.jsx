@@ -5,7 +5,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
 import Webinar from "./pages/Webinar";
-import Ads from "./pages/Ads";
+import Ads from "./pages/Ads_refactored";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import RefundPolicy from "./pages/RefundPolicy";
